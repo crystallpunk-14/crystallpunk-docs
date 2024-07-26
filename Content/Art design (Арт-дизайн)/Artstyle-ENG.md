@@ -28,11 +28,9 @@ For objects with complex shapes, like swords, deviations from this rule are allo
 
 ### Perspective of ovals, circles on the example of a cylinder.
 
-![image](https://github.com/Agoichi/crystallpunk-docs-AGOICHI/assets/92464780/9d071966-16aa-4e6b-9cf5-44c82cc58e43)
+![Sprite-0001](https://github.com/user-attachments/assets/667fbfe5-37ba-44c7-8008-2dcc312dab08)
 
-![image](https://github.com/Agoichi/crystallpunk-docs-AGOICHI/assets/92464780/d05cae30-f4f6-46f8-b25e-c080375815be)
-
-
+![Sprite-0001](https://github.com/user-attachments/assets/125d5842-80f7-47ef-9478-96472acd8abd)
 
 
 
