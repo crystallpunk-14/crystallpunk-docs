@@ -1,13 +1,14 @@
-# Scenario
+> [!WARNING]
+> This page is out of date: We are not tying into the expedition format as the main scenario of the round. The article is awaiting a rewrite.
 
 Depending on the selected map, different scenarios can be run on it.
 
-**Scenario is a set of elements selected before the round that form the main storyline of the entire round.
+**Scenario is a set of elements selected before the round that form the main storyline of the entire round.**
 A scenario consists of:
-- Protagonists. 
+- [Protagonists](https://github.com/crystallpunk-14/crystall-punk-14/wiki/Protagonists-%5BENG%5D). 
 	- Expedition Goal. The primary objective (or objectives) for the entire ship's crew, displayed and tracked in the character's menu. Fulfilling the expedition goal is the primary task of the shift, and it determines the “success” of the round.
 	- Personal Motivations. Some expedition members may have their own unique goals related to the scenario and the player's role. These may be positive or neutral.
-- Antagonists. Various forces whose purpose is to thwart the fulfillment of the expedition's goal.
+- [Antagonists](https://github.com/crystallpunk-14/crystall-punk-14/wiki/Antagonists-%5BENG%5D). Various forces whose purpose is to thwart the fulfillment of the expedition's goal.
 	- Primary objective. To prevent the fulfillment of the expedition's goal. This can be an indirect antagonist goal, such as how to destroy an elemental ship.
 	- Side Objectives. Different antagonists may have their own side goals.
 - Random Events. A list of random events that may occur during the course of a runud are determined by a particular scenario.
@@ -42,4 +43,3 @@ Random Events. Different events depend on the map. For example, for the Ruins of
 - Falling Shards of Syberis
 - Contact with the Dolurr Plan (Plan of the Dead).
 - Awakening of Xandia's mechanical guards (mapped in advance)
-

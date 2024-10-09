@@ -1,16 +1,10 @@
-# CrystallPunk14
-
 CrystallPunk14 is a project that tries to capture the experience of oneshots (one-off scenarios) from tabletop RPGs. The most important difference of the project from other “computer versions of TRG” such as Baldurs Gate 3, Pathfinder and other big RPG franchises is the mmo component of the project.
 The almost complete absence of NPCs, and a large number of players in different roles provide the game world with lively stories, and the game mechanics only need to provide players with enough tools and motivation to generate these stories.
 
 This details the basic design principles of the project, which all mechanics and decisions made during development must adhere to.
 These are not rigid principles, but if your mechanics do not conform to the principles below, they will be scrutinized before acceptance.
 
-## Relevance to the setting
-
-The chosen setting of the game is a parallel world, very close to the world of Eberron, from Dungeon and Dragons. Accordingly, all the mechanics should look logical in this setting. The key word is “parallel” world. This means that we don't have to adhere to the lore of this universe, and we may well rewrite some aspects of it to suit our needs. But, for the most part, we try to stick to this setting as a solid and well-developed foundation.
-
-## Complexity
+## 2. Complexity
 
 SS14 has come a long way from being a simple atmospheric simulator, but it has built an important aspect into the core of the game - **deep simulation gameplay**. The natural complexity of the sandbox, combined with the unpredictability of human players, creates a truly chaotic environment where anything can happen. It is important to provide players with the right mechanics while encouraging unique situations to arise.
 
@@ -18,7 +12,7 @@ Realism is not important, and can end up causing gameplay problems and greatly r
 
 Any simulation-based mechanics or interaction should be easy to learn based on in-game information alone and **not require diving into a wiki or textbook to understand**.
 
-## Variability
+## 3. Variability
 
 When designing mechanics, it is important to be attentive to the player's ability to choose different options, and to provide enough information to shape that choice. If your choices are too simple, or conversely, too overcomplicated by the sheer amount of information, the player's choice becomes a “false choice” when there is only one “right” answer.
 Another word for this is Meta-game (Meta), or when some choices are more efficient than other choices, and become the only rational choice. **Avoid designing mechanics in such a way that a Meta can occur**.
@@ -33,7 +27,7 @@ Care should also be taken to ensure that **the actions of some players do not ov
 
 This also applies to non-combat interactions: avoid creating situations where players are drawn into mechanically, or by metagaming. **The player should never feel that there is no choice in their situation**.
 
-## Progression
+## 4. Progression
 
 The average duration of one round-scenario is **one and a half hours**. And during this time, the game situation should never be the same. This can be achieved by the following methods:
 
@@ -45,7 +39,7 @@ There are 3 basic stages:
 
 **Instancy**. Day turns to night, random events periodically affect the round, and your mechanics may not be constant either. Some key parameters may change over time or as a result of player actions.
 
-## Seriously ridiculous
+## 5. Seriously ridiculous
 
 CP14 is essentially a horror comedy: on one side you have a cruel government that doesn't care about its inhabitants, sending them beyond the borders of the explored world and exposing them to the terrifying dangers of dangerous uninhabited zones, and on the other side you have buffoons and incompetent assistants causing all sorts of hilarious disasters.
 
@@ -53,7 +47,7 @@ The situations that regularly occur in CP14 are absolutely insane, but players t
 
 When creating new mechanics, try to imagine how **everything could go incredibly awful and ridiculously ridiculous** (or right, depending on who you ask). Try to create situations that would be funny to hear as a story, but would be scary for the player to find themselves in.
 
-## Player Interaction
+## 6. Player Interaction
 
 **Mechanics should strive to be prosocial and encourage interaction with other players**. These interactions need not be strictly cooperative or competitive in nature, but they should eventually have at least a side effect on other players' gameplay.
 Humans are chaotic and unpredictable, and their participation in the game brings a depth and replayability that no linear mechanics can achieve.

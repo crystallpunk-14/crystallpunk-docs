@@ -1,4 +1,3 @@
-
 # Visual style decision
 
 Given that we can't use most of the Space Station 14 art and content, and we need to draw and create our own content, we have the option to set our own visual style from the beginning. All CrystallPunk14 art design must follow the rules below:
@@ -7,10 +6,11 @@ Given that we can't use most of the Space Station 14 art and content, and we nee
 
 For the visual integrity of the project, you should adhere to the specific color palette located in this folder.
 
-![palette](https://github.com/crystallpunk-14/crystallpunk-docs/assets/96445749/9a60beeb-62a1-48b2-bc84-94be69fecceb)
-
+![image](https://github.com/user-attachments/assets/36253863-7c7f-453a-87dd-4a315fb69df0)
 
 Deviations from the palette in tone and hue are allowed, but the primary colors should adhere to this solution.
+
+![image](https://github.com/user-attachments/assets/cb8f7389-b399-4cb6-977a-9211674f134c)
 
 ## Style /TG/Station
 

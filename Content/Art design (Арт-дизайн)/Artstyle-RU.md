@@ -7,10 +7,11 @@
 
 Для визуальной целостности проекта, необходимо придерживаться определенной цветовой палитрой, расположенной в этой папке.
 
-![palette](https://github.com/crystallpunk-14/crystallpunk-docs/assets/96445749/9a60beeb-62a1-48b2-bc84-94be69fecceb)
-
+![image](https://github.com/user-attachments/assets/36253863-7c7f-453a-87dd-4a315fb69df0)
 
 Допустимы отклонения от палитры в тональности и оттенках, но основные цвета должны придерживаться этого решения.
+
+![image](https://github.com/user-attachments/assets/cb8f7389-b399-4cb6-977a-9211674f134c)
 
 ## Стиль /TG/Station
 
