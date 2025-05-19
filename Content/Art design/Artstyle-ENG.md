@@ -68,3 +68,10 @@ Banding is some cases of drawing pixels close together, repeating the shape. Thi
 
 ![image](https://github.com/user-attachments/assets/63686eb1-1c00-4994-9f5f-3e1770a7a29e)
 ![image](https://github.com/user-attachments/assets/8fca8041-6cdb-4d2d-a9f6-7bb93e9d0c5d)
+
+
+### Shape
+
+Every object has a distinct shape. No matter how complex the shape and volume of an object are, they can always be reduced to a set of simple geometric primitives. At the very beginning of the work draw simple geometric shapes, it can be a ball, cylinder, pyramid, etc., but in almost any situation can help the simplest cube. Using the tools copy, select and transform assemble your object from the primitives. And only after the object is made up of primitives can you add color and other details.
+
+![image](https://github.com/user-attachments/assets/5ec0b74e-3b58-46fb-8990-395faf75d3d0)
