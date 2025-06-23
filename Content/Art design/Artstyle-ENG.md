@@ -75,3 +75,9 @@ Banding is some cases of drawing pixels close together, repeating the shape. Thi
 Every object has a distinct shape. No matter how complex the shape and volume of an object are, they can always be reduced to a set of simple geometric primitives. At the very beginning of the work draw simple geometric shapes, it can be a ball, cylinder, pyramid, etc., but in almost any situation can help the simplest cube. Using the tools copy, select and transform assemble your object from the primitives. And only after the object is made up of primitives can you add color and other details.
 
 ![image](https://github.com/user-attachments/assets/5ec0b74e-3b58-46fb-8990-395faf75d3d0)
+
+### Hue shifting
+
+When creating a palette, don't forget about the colorfulness and saturation of your colors. The palette consisting of non-contrasting and similar colors is unattractive and very conspicuous against the background of existing sprites. To diversify their shades should give them different colors. For example: making a green palette light will go to yellow shades, and the shadow in blue. In this way, colors can be given a mood, experimenting with the warmth and coldness of the light shade.
+
+![hue](https://github.com/user-attachments/assets/e0314cf9-c8fb-47aa-8f3a-dbbc3ac0c296)
