@@ -1,0 +1,17 @@
+site_name: CrystallEdge Docs
+site_url: https://https://crystallpunk-14.github.io/crystallpunk-docs/
+
+theme:
+  name: material
+
+plugins:
+  - search
+  - awesome-pages
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - codehilite
+  - footnotes
+  - attr_list
