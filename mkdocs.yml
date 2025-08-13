@@ -35,3 +35,6 @@ markdown_extensions:
   - codehilite
   - footnotes
   - attr_list
+
+extra_css:
+  - styles/extra.css
