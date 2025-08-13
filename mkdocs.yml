@@ -3,6 +3,26 @@ site_url: https://https://crystallpunk-14.github.io/crystallpunk-docs/
 
 theme:
   name: material
+  logo: logo.png
+  palette:
+    - scheme: slate         # тёмная основа
+      primary: indigo # цвет основных элементов (верхняя панель, кнопки)
+      accent: orange       # цвет акцентных элементов (выделение, ссылки, чекбоксы)
+      toggle:
+        icon: material/weather-night
+        name: Переключить на светлую тему
+      # Дополнительная кастомизация цветов:
+      background: '#191724'   # цвет фона всей страницы
+      surface:   '#26233a'   # цвет "карточек", всплывающих окон и навигации
+      on-background: '#e0def4' # цвет основного текста
+      on-surface:   '#e0def4' # цвет текста на "карточках"
+      # Можно добавить другие цвета: https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette
+    - scheme: default
+      primary: indigo
+      accent: orange
+      toggle:
+        icon: material/weather-sunny
+        name: Переключить на тёмную тему
 
 plugins:
   - search
