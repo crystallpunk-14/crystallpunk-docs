@@ -11,3 +11,24 @@
 https://crystallpunk-14.github.io/crystallpunk-docs/
 
 <img width="1615" height="721" alt="image" src="https://github.com/user-attachments/assets/2eb6c910-fe59-4bc7-8a4b-9d2ab4345a68" />
+
+
+Поддерживаются различные markdown приколы:
+
+!!! note
+    Заметка
+
+!!! warning
+    предупреждение
+
+!!! success
+    Можно и «зелёные» позитивные блоки.
+
+Вот текст сноски[^1].
+
+[^1]: А вот сама сноска.
+
+| Колонка | Данные |
+|---------|--------|
+| A       | 1      |
+| B       | 2      |
