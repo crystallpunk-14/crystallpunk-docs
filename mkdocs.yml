@@ -3,7 +3,7 @@ site_url: https://https://crystallpunk-14.github.io/crystallpunk-docs/
 
 theme:
   name: material
-  logo: logo.png
+  logo: _assets/logo.png
   palette:
     - scheme: slate         # тёмная основа
       primary: indigo # цвет основных элементов (верхняя панель, кнопки)
@@ -37,4 +37,4 @@ markdown_extensions:
   - attr_list
 
 extra_css:
-  - styles/extra.css
+  - _assets/styles/extra.css
