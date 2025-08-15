@@ -12,23 +12,22 @@ https://crystallpunk-14.github.io/crystallpunk-docs/
 
 <img width="1615" height="721" alt="image" src="https://github.com/user-attachments/assets/2eb6c910-fe59-4bc7-8a4b-9d2ab4345a68" />
 
+# Установка
 
-Поддерживаются различные markdown приколы:
+Для локальной установки:
 
-!!! note
-    Заметка
+Необходимо иметь: Python 3.10+
 
-!!! warning
-    предупреждение
+Git Bash:
+```
+python -m venv .venv
+python -m pip install --upgrade pip
+pip install mkdocs mkdocs-material mkdocs-awesome-pages-plugin
+mkdocs build
+```
 
-!!! success
-    Можно и «зелёные» позитивные блоки.
-
-Вот текст сноски[^1].
-
-[^1]: А вот сама сноска.
-
-| Колонка | Данные |
-|---------|--------|
-| A       | 1      |
-| B       | 2      |
+Затем вы можете запустить локальный сайт, к которому вы сможете подключиться по `http://127.0.0.1:8000/`
+```
+source .venv/Scripts/activate
+mkdocs serve
+```
