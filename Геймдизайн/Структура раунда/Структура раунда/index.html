@@ -644,6 +644,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Структура раунда
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -660,6 +678,36 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автобалансирование
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -777,6 +825,89 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_3" id="__nav_3_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Город
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Город
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%D0%93%D0%BE%D1%80%D0%BE%D0%B4/%D0%93%D0%BE%D1%80%D0%BE%D0%B4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Город
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -812,6 +943,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автобалансирование
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -828,10 +978,20 @@
 
 
 <h1 id="_1">Структура раунда<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>Каждый игровой раунд представляет из себя внутриигровую неделю, во время которой мирные игроки и антагонисты противостоят друг другу.</p>
-<p>Раунд всегда либо заканчивается окончанием недели, что обозначает победу мирных, либо выполнением финальной цели антагонистов, что обозначает победу антагониста.</p>
-<p>Финальная цель антагонистов обычно глобально влияет на весь город, эпично завершая раунд.</p>
-<p>Каждый игровой день (или ночь) могут происходить случайные события, значительно влияя на игровой процесс.</p>
+<p>Каждый игровой раунд представляет из себя внутриигровую неделю, во время которой 2 команды противостоят друг другу.</p>
+<p>Команда 1: Город
+Представляет из себя всех игроков, кто не антагонисты. Эти игроки занимают разные роли и выполняют различные функции, обеспечивая прогресс в противостоянии с другой командой.
+- Стража защищает и сражается с антагонистами
+- Ремесленники прогрессируют экипировку и поддерживают инфраструктуру города
+- Таверна покрывает нужды, такие как голод, жажда и т.д.</p>
+<p>Команда 2: Антагонисты
+Малочисленная группа игроков, имеющие геймплейные преимущества и четкую цель завершающую раунд.
+Тип антагониста неизвестен городу с начала раунда.</p>
+<p>Раунд всегда либо заканчивается окончанием недели, что обозначает победу города, либо выполнением финальной цели антагонистов, что обозначает победу антагониста.</p>
+<h2 id="_2">Автобалансирование<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>В конце каждого дня могут происходить случайные события, значительно влияя на баланс сторон.</p>
+<p>Случайные события должны помогать проигрывающей команде, либо мешать выйгрывающей команде. (Эффект резинки из гонок)</p>
+<p>Если все антагонисты погибли, но до конца раунда еще много времени, игра должна накинуть новых антагонистов.</p>
 
 
 
