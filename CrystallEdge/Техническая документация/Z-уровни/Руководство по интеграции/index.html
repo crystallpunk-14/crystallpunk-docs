@@ -1425,13 +1425,8 @@
 </li>
 <li><code>CEZLevelGhostMoverComponent</code> необходимо добавить на прототипы призраков и других летающих призрачных сущностей, чтобы те могли двигаться сквозь z-уровни.</li>
 <li>Необходимо отредактировать <code>ParallaxOverlay</code>, в методе <code>BeforeDraw()</code> добавив отключение рендеринга параллакса, если это не самый нижний видимый z-уровень. <a href="https://github.com/crystallpunk-14/crystall-edge/blob/e533afb11e36a512a7b32a9d326ec261f19b1c0d/Content.Client/Parallax/ParallaxOverlay.cs#L43-L48">Пример можете найти в репозитории</a>.</li>
-<li>Добавьте в свой репозиторий прототип 
-```yml</li>
-<li>type: entity
-  id: CEZLevelEye
-  save: false
-  categories: [ HideSpawnMenu ]
-  ```</li>
+<li>Добавьте в свой репозиторий прототип
+  <img width="336" height="139" alt="image" src="https://github.com/user-attachments/assets/23e10e94-f7d1-4c3b-99f5-d7e315d0bfe0" /></li>
 <li>Необходимо добавить <code>CEZPhysicsComponent</code> на все сущности, которые по вашему мнению должны перемещаться между z-уровнями посредством гравитации.<ul>
 <li>Не нужно добавлять этот компонент на ВСЕ сущности, так как это сильно нагружает сервер. Стены, например, могут спокойно обойтись и без z-физики, так как никогда не откручиваются.</li>
 <li>Добавляйте на <code>BaseItem</code>, мобов, откручиваемые структуры.</li>
