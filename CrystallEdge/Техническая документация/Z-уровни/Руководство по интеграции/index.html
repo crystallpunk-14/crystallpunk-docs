@@ -1414,7 +1414,7 @@
 <h2 id="_1">Минимальная рабочая настройка<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Скопируйте все содержимое <code>_CE/ZLevels</code> папок в <code>Shared</code>, <code>Server</code> и <code>Client</code> частях.</li>
-<li>Найдите в клиенте <code>ScalingViewport</code> и обновите рендеринг, по аналогии как это сделано в CE репозитории.</li>
+<li>Найдите в клиенте <code>ScalingViewport</code> и обновите рендеринг, по аналогии <a href="https://github.com/crystallpunk-14/crystall-edge/blob/e533afb11e36a512a7b32a9d326ec261f19b1c0d/Content.Client/Viewport/ScalingViewport.cs#L153-L155">как это сделано в CE репозитории</a>.</li>
 <li>Почините все импорты, Убедитесь что ни в одном файле нет ошибок. Для этого придется добавить некоторые дополнительные поля в ванильные прототипы и компоненты.<ul>
 <li><code>CEPvsOverrideSystem</code> и <code>CEPvsOverrideComponent</code> так же саблицензированы под MIT и вы можете их себе портировать, либо заменить на стандартные <code>_pvs.AddGlobalOverride</code> и <code>_pvs.RemoveGlobalOverride</code> функции.</li>
 <li>Все ассеты, такие как прототипы акшенов, шейдеры - саблицензированы под CC свободную лицензию и вы можете скопировать их себе, либо сделать свои варианты.</li>
@@ -1424,7 +1424,7 @@
 </ul>
 </li>
 <li><code>CEZLevelGhostMoverComponent</code> необходимо добавить на прототипы призраков и других летающих призрачных сущностей, чтобы те могли двигаться сквозь z-уровни.</li>
-<li>Необходимо отредактировать <code>ParallaxOverlay</code>, в методе <code>BeforeDraw()</code> добавив отключение рендеринга параллакса, если это не самый нижний видимый z-уровень. Пример можете найти в репозитории.</li>
+<li>Необходимо отредактировать <code>ParallaxOverlay</code>, в методе <code>BeforeDraw()</code> добавив отключение рендеринга параллакса, если это не самый нижний видимый z-уровень. <a href="https://github.com/crystallpunk-14/crystall-edge/blob/e533afb11e36a512a7b32a9d326ec261f19b1c0d/Content.Client/Parallax/ParallaxOverlay.cs#L43-L48">Пример можете найти в репозитории</a>.</li>
 <li>Добавьте в свой репозиторий прототип 
 ```yml</li>
 <li>type: entity
