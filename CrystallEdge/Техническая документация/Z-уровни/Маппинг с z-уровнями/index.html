@@ -874,19 +874,19 @@
 <div class="codehilite"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">type</span><span class="p">:</span><span class="w"> </span><span class="nx">gameMap</span>
 <span class="w">  </span><span class="nx">id</span><span class="p">:</span><span class="w"> </span><span class="nx">ZMappingTest</span>
 <span class="w">  </span><span class="nx">mapName</span><span class="p">:</span><span class="w"> </span><span class="nx">ZMappingTest</span>
-<span class="w">  </span><span class="nx">mapsBelow</span><span class="p">:</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
 <span class="w">  </span><span class="nx">mapPath</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
-<span class="w">  </span><span class="nx">mapsAbove</span><span class="p">:</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
-<span class="w">  </span><span class="nx">zLevelsComponentOverrides</span><span class="p">:</span>
-<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">Любые</span><span class="w"> </span><span class="nx">компоненты</span><span class="p">,</span><span class="w"> </span><span class="nx">которые</span><span class="w"> </span><span class="nx">вы</span><span class="w"> </span><span class="nx">хотите</span><span class="w"> </span><span class="nx">чтобы</span><span class="w"> </span><span class="nx">были</span><span class="w"> </span><span class="nx">добавлены</span><span class="w"> </span><span class="nx">на</span><span class="w"> </span><span class="nx">все</span><span class="w"> </span><span class="nx">карты</span><span class="w"> </span><span class="nx">z</span><span class="o">-</span><span class="nx">уровней</span><span class="p">.</span><span class="w"> </span><span class="nx">Гравитация</span><span class="p">,</span><span class="w"> </span><span class="nx">Атмосфера</span><span class="p">,</span><span class="w"> </span><span class="nx">освещение</span><span class="p">,</span><span class="w"> </span><span class="nx">параллаксы</span><span class="w"> </span><span class="nx">и</span><span class="w"> </span><span class="nx">т</span><span class="p">.</span><span class="nx">д</span><span class="p">.</span>
-<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">Эти</span><span class="w"> </span><span class="nx">компоненты</span><span class="w"> </span><span class="nx">будут</span><span class="w"> </span><span class="nx">перезаписаны</span><span class="w"> </span><span class="nx">для</span><span class="w"> </span>
 <span class="w">  </span><span class="nx">minPlayers</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="w">  </span><span class="nx">stations</span><span class="p">:</span>
 <span class="w">    </span><span class="nx">Dev</span><span class="p">:</span>
+<span class="w">      </span><span class="nx">components</span><span class="p">:</span>
+<span class="w">        </span><span class="nx">mapsAbove</span><span class="p">:</span>
+<span class="w">          </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
+<span class="w">          </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
+<span class="w">        </span><span class="nx">mapsBelow</span><span class="p">:</span>
+<span class="w">          </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
+<span class="w">          </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">Empty</span><span class="p">.</span><span class="nx">yml</span>
+<span class="w">        </span><span class="nx">zLevelsComponentOverrides</span><span class="p">:</span>
+<span class="w">          </span><span class="err">#</span><span class="w"> </span><span class="nx">Любые</span><span class="w"> </span><span class="nx">компоненты</span><span class="p">,</span><span class="w"> </span><span class="nx">которые</span><span class="w"> </span><span class="nx">вы</span><span class="w"> </span><span class="nx">хотите</span><span class="w"> </span><span class="nx">чтобы</span><span class="w"> </span><span class="nx">были</span><span class="w"> </span><span class="nx">добавлены</span><span class="w"> </span><span class="nx">на</span><span class="w"> </span><span class="nx">все</span><span class="w"> </span><span class="nx">карты</span><span class="w"> </span><span class="nx">z</span><span class="o">-</span><span class="nx">уровней</span><span class="p">.</span><span class="w"> </span><span class="nx">Гравитация</span><span class="p">,</span><span class="w"> </span><span class="nx">Атмосфера</span><span class="p">,</span><span class="w"> </span><span class="nx">освещение</span><span class="p">,</span><span class="w"> </span><span class="nx">параллаксы</span><span class="w"> </span><span class="nx">и</span><span class="w"> </span><span class="nx">т</span><span class="p">.</span><span class="nx">д</span><span class="p">.</span>
 <span class="w">      </span><span class="err">#</span><span class="w"> </span><span class="nx">Дальше</span><span class="w"> </span><span class="nx">стандартная</span><span class="w"> </span><span class="nx">настройка</span><span class="w"> </span><span class="nx">gameMap</span>
 </code></pre></div>
 
@@ -916,16 +916,12 @@
 </code></pre></div>
 
 <p>и перезаписать <code>GameMapPrototype</code> вашей карты, чтобы она ссылалась на новые файлы:</p>
-<div class="codehilite"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">type</span><span class="p">:</span><span class="w"> </span><span class="nx">gameMap</span>
-<span class="w">  </span><span class="nx">id</span><span class="p">:</span><span class="w"> </span><span class="nx">ZMappingTest</span>
-<span class="w">  </span><span class="nx">mapName</span><span class="p">:</span><span class="w"> </span><span class="nx">ZMappingTest</span>
-<span class="w">  </span><span class="nx">mapsBelow</span><span class="p">:</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">ZMappingTest</span><span class="o">/</span><span class="nx">ZMappingTest</span><span class="o">-</span><span class="mi">2</span><span class="p">.</span><span class="nx">yml</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">ZMappingTest</span><span class="o">/</span><span class="nx">ZMappingTest</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="nx">yml</span>
-<span class="w">  </span><span class="nx">mapPath</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">ZMappingTest</span><span class="o">/</span><span class="nx">ZMappingTest0</span><span class="p">.</span><span class="nx">yml</span>
-<span class="w">  </span><span class="nx">mapsAbove</span><span class="p">:</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">ZMappingTest</span><span class="o">/</span><span class="nx">ZMappingTest1</span><span class="p">.</span><span class="nx">yml</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="o">/</span><span class="nx">Maps</span><span class="o">/</span><span class="nx">_CE</span><span class="o">/</span><span class="nx">ZMappingTest</span><span class="o">/</span><span class="nx">ZMappingTest2</span><span class="p">.</span><span class="nx">yml</span>
+<div class="codehilite"><pre><span></span><code>  mapsBelow:
+  <span class="k">-</span> /Maps/_CE/ZMappingTest/ZMappingTest-2.yml
+  <span class="k">-</span> /Maps/_CE/ZMappingTest/ZMappingTest-1.yml
+  mapsAbove:
+  <span class="k">-</span> /Maps/_CE/ZMappingTest/ZMappingTest1.yml
+  <span class="k">-</span> /Maps/_CE/ZMappingTest/ZMappingTest2.yml
 </code></pre></div>
 
 
