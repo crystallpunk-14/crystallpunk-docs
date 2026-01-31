@@ -21,19 +21,19 @@ Resources/Maps/_CE/Empty.yml
 - type: gameMap
   id: ZMappingTest
   mapName: ZMappingTest
-  mapsBelow:
-  - /Maps/_CE/Empty.yml
-  - /Maps/_CE/Empty.yml
   mapPath: /Maps/_CE/Empty.yml
-  mapsAbove:
-  - /Maps/_CE/Empty.yml
-  - /Maps/_CE/Empty.yml
-  zLevelsComponentOverrides:
-    # Любые компоненты, которые вы хотите чтобы были добавлены на все карты z-уровней. Гравитация, Атмосфера, освещение, параллаксы и т.д.
-    # Эти компоненты будут перезаписаны для 
   minPlayers: 0
   stations:
     Dev:
+      components:
+        mapsAbove:
+          - /Maps/_CE/Empty.yml
+          - /Maps/_CE/Empty.yml
+        mapsBelow:
+          - /Maps/_CE/Empty.yml
+          - /Maps/_CE/Empty.yml
+        zLevelsComponentOverrides:
+          # Любые компоненты, которые вы хотите чтобы были добавлены на все карты z-уровней. Гравитация, Атмосфера, освещение, параллаксы и т.д.
       # Дальше стандартная настройка gameMap
 ```
 
@@ -74,13 +74,9 @@ Resources/Maps/_CE/ZMappingTest
 и перезаписать `GameMapPrototype` вашей карты, чтобы она ссылалась на новые файлы:
 
 ```yml
-- type: gameMap
-  id: ZMappingTest
-  mapName: ZMappingTest
   mapsBelow:
   - /Maps/_CE/ZMappingTest/ZMappingTest-2.yml
   - /Maps/_CE/ZMappingTest/ZMappingTest-1.yml
-  mapPath: /Maps/_CE/ZMappingTest/ZMappingTest0.yml
   mapsAbove:
   - /Maps/_CE/ZMappingTest/ZMappingTest1.yml
   - /Maps/_CE/ZMappingTest/ZMappingTest2.yml
