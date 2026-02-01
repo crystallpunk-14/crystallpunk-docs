@@ -26,14 +26,15 @@ Resources/Maps/_CE/Empty.yml
   stations:
     Dev:
       components:
-        mapsAbove:
-          - /Maps/_CE/Empty.yml
-          - /Maps/_CE/Empty.yml
-        mapsBelow:
-          - /Maps/_CE/Empty.yml
-          - /Maps/_CE/Empty.yml
-        zLevelsComponentOverrides:
-          # Любые компоненты, которые вы хотите чтобы были добавлены на все карты z-уровней. Гравитация, Атмосфера, освещение, параллаксы и т.д.
+        - type: CEStationZLevels
+          mapsAbove:
+            - /Maps/_CE/Empty.yml
+            - /Maps/_CE/Empty.yml
+          mapsBelow:
+            - /Maps/_CE/Empty.yml
+            - /Maps/_CE/Empty.yml
+          zLevelsComponentOverrides:
+            # Любые компоненты, которые вы хотите чтобы были добавлены на все карты z-уровней. Гравитация, Атмосфера, освещение, параллаксы и т.д.
       # Дальше стандартная настройка gameMap
 ```
 
