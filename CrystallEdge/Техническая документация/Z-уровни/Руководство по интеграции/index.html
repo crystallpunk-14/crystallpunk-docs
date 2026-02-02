@@ -862,7 +862,6 @@
 <li>Скопируйте все содержимое <code>_CE/ZLevels</code> папок в <code>Shared</code>, <code>Server</code> и <code>Client</code> частях.</li>
 <li>Найдите в клиенте <code>ScalingViewport</code>, сделайте его partial и обновите рендеринг, по аналогии <a href="https://github.com/crystallpunk-14/crystall-edge/blob/e533afb11e36a512a7b32a9d326ec261f19b1c0d/Content.Client/Viewport/ScalingViewport.cs#L153-L155">как это сделано в CE репозитории</a>.</li>
 <li>Почините все импорты, Убедитесь что ни в одном файле нет ошибок. Для этого придется добавить некоторые дополнительные поля в ванильные прототипы и компоненты.<ul>
-<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/ca1795d821637af1ba6faaf964ee598e020e1290/Content.Shared/_CE/CCVars/CCvars.CEZLevels.cs#L9">CVars</a> </li>
 <li><code>CEPvsOverrideSystem</code> и <code>CEPvsOverrideComponent</code> так же саблицензированы под MIT и вы можете их себе портировать, либо заменить на стандартные <code>_pvs.AddGlobalOverride</code> и <code>_pvs.RemoveGlobalOverride</code> функции.</li>
 <li>Все ассеты, такие как прототипы акшенов, шейдеры - саблицензированы под CC свободную лицензию и вы можете скопировать их себе, либо сделать свои варианты.</li>
 <li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/master/Resources/Textures/_CE/Shaders/zblur.swsl">Шейдер размытия</a></li>
