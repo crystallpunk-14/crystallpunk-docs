@@ -865,14 +865,11 @@
 <li><code>CEPvsOverrideSystem</code> и <code>CEPvsOverrideComponent</code> так же саблицензированы под MIT и вы можете их себе портировать, либо заменить на стандартные <code>_pvs.AddGlobalOverride</code> и <code>_pvs.RemoveGlobalOverride</code> функции.</li>
 <li>Все ассеты, такие как прототипы акшенов, шейдеры - саблицензированы под CC свободную лицензию и вы можете скопировать их себе, либо сделать свои варианты.</li>
 <li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/master/Resources/Textures/_CE/Shaders/zblur.swsl">Шейдер размытия</a></li>
-<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/master/Resources/Prototypes/_CE/Shaders/shaders.yml#L22-L25">Прототоип шейдера</a></li>
+<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/master/Resources/Prototypes/_CE/Shaders/shaders.yml#L22-L25">Прототип шейдера</a></li>
 <li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/ca1795d821637af1ba6faaf964ee598e020e1290/Resources/Prototypes/_CE/Entities/Actions/zLevels.yml">Прототипы акшенов для призраков</a></li>
-<li><code>ContentTileDefinition</code> получил поле <a href="https://github.com/crystallpunk-14/crystall-edge/blob/ca1795d821637af1ba6faaf964ee598e020e1290/Content.Shared/Maps/ContentTileDefinition.cs#L134C63-L140C41">Transparent</a>, который нужно вручную проставить на true во все "прозрачные" тайлы в вашем проекте, включая стандартные тайлы космоса.<ul>
-<li>Помните, что поддерживаются только планетарные карты, то есть карты с <code>MapComponent</code> и <code>MapGridComponent</code> одновременно на одной сущности. </li>
-</ul>
-</li>
+<li><code>ContentTileDefinition</code> получил поле <a href="https://github.com/crystallpunk-14/crystall-edge/blob/ca1795d821637af1ba6faaf964ee598e020e1290/Content.Shared/Maps/ContentTileDefinition.cs#L134C63-L140C41">Transparent</a>, который нужно вручную проставить на true во все "прозрачные" тайлы в вашем проекте, включая стандартные тайлы космоса.</li>
 <li><code>CEZLevelGhostMoverComponent</code> необходимо добавить на <a href="https://github.com/crystallpunk-14/crystall-edge/blob/ca1795d821637af1ba6faaf964ee598e020e1290/Resources/Prototypes/Entities/Mobs/Player/observer.yml#L31-L33">прототипы призраков</a> и других летающих призрачных сущностей, чтобы те могли двигаться сквозь z-уровни.</li>
-<li>Необходимо отредактировать <code>ParallaxOverlay</code>, в методе <code>BeforeDraw()</code> добавив отключение рендеринга параллакса, если это не самый нижний видимый z-уровень. <a href="https://github.com/crystallpunk-14/crystall-edge/blob/e533afb11e36a512a7b32a9d326ec261f19b1c0d/Content.Client/Parallax/ParallaxOverlay.cs#L43-L48">Пример можете найти в репозитории</a>.</li>
+<li>Необходимо отредактировать <code>ParallaxOverlay</code>, в методе <code>BeforeDraw()</code> добавив <a href="https://github.com/crystallpunk-14/crystall-edge/blob/e533afb11e36a512a7b32a9d326ec261f19b1c0d/Content.Client/Parallax/ParallaxOverlay.cs#L43-L48">отключение рендеринга параллакса</a>, если это не самый нижний видимый z-уровень.</li>
 <li>Добавьте в свой репозиторий прототип
   <img width="336" height="139" alt="image" src="https://github.com/user-attachments/assets/23e10e94-f7d1-4c3b-99f5-d7e315d0bfe0" /></li>
 <li>Необходимо добавить <code>CEZPhysicsComponent</code> на все сущности, которые по вашему мнению должны перемещаться между z-уровнями посредством гравитации.<ul>
@@ -893,6 +890,7 @@
 <li><code>Weather Stensil Overlay</code> получал небольшие фиксы, чтобы включить пустые тайлы в проверку, нужно ли рисовать погоду, учитывая что над пустыми тайлами может быть крыша.</li>
 <li><code>LandEvent</code> имеет фикс, который убирает срабатывание ивента, если под сущностью нет пола. Отключает разбивание яиц в воздухе после броска. <code>LandEvent</code> вызывается вручную по приземлению после падения.</li>
 <li>Для цикла дня и ночи и цикла теней был убран случайный стартовый сдвиг, чтобы синхронизировать освещение на всех уровнях.</li>
+<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/c37eebf47dc65af43fba0b73fa2fba116ab9a2d8/Content.Shared/Movement/Systems/SharedMoverController.Input.cs#L274-L283">Отключен сброс поворота камеры</a> при переходе между Z-уровнями</li>
 </ul>
 <h2 id="_3">Отслеживание изменений<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>Для удобства отслеживания PR-ов, редактирующих и улучшающих z-уровни, вы можете отфильтровать их по zLevels метке в репозитории:</p>
