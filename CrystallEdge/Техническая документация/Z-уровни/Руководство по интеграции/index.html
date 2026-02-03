@@ -915,9 +915,9 @@
 <p>Я (Ed) точно помню не все правки которые сделал в коде Wizden, но постараюсь пополнять этот список.</p>
 </div>
 <ul>
-<li><code>Weather Stensil Overlay</code> получал небольшие фиксы, чтобы включить пустые тайлы в проверку, нужно ли рисовать погоду, учитывая что над пустыми тайлами может быть крыша.</li>
-<li><code>LandEvent</code> имеет фикс, который убирает срабатывание ивента, если под сущностью нет пола. Отключает разбивание яиц в воздухе после броска. <code>LandEvent</code> вызывается вручную по приземлению после падения.</li>
-<li>Для цикла дня и ночи и цикла теней был убран случайный стартовый сдвиг, чтобы синхронизировать освещение на всех уровнях.</li>
+<li><code>Weather Stensil Overlay</code> получал небольшие фиксы (<a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Client/Overlays/StencilOverlay.Weather.cs#L46">фикс 1</a>, <a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Client/Overlays/StencilOverlay.Weather.cs#L23">фикс 2</a>), чтобы включить пустые тайлы в проверку, нужно ли рисовать погоду, учитывая что над пустыми тайлами может быть крыша.</li>
+<li><code>LandEvent</code> <a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Shared/Throwing/ThrownItemSystem.cs#L133-L136">имеет фикс</a>, который убирает срабатывание ивента, если под сущностью нет пола. Отключает разбивание яиц в воздухе после броска. <code>LandEvent</code> вызывается вручную по приземлению после падения.</li>
+<li>Для цикла дня и ночи и цикла теней был убран случайный стартовый сдвиг, чтобы синхронизировать освещение на всех уровнях. <a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Shared/Light/Components/LightCycleComponent.cs#L31">Тык 1</a></li>
 <li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/c37eebf47dc65af43fba0b73fa2fba116ab9a2d8/Content.Shared/Movement/Systems/SharedMoverController.Input.cs#L274-L283">Отключен сброс поворота камеры</a> при переходе между Z-уровнями</li>
 </ul>
 <h2 id="_3">Отслеживание изменений<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
