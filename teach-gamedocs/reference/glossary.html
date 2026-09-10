@@ -1,0 +1,82 @@
+<title>Course Glossary</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+<div class="masthead"><span>CrystallEdge Docs Course</span><span>Reference</span></div>
+
+<h1><span class="kicker">Reference</span>Глоссарий курса</h1>
+
+<p>Единый список терминов. Во всех уроках эти слова значат ровно то, что здесь.
+Если урок вводит новый термин, он попадает сюда.</p>
+
+<h2>Документы</h2>
+
+<h3>Descriptive doc (описательный документ)</h3>
+<p>Документ, который <em>описывает</em>, как устроена игра прямо сейчас: системы,
+числа, экраны. Классический GDD. Гниёт, потому что игра меняется быстрее текста, и
+описание всегда отстаёт.<span class="cite">1</span></p>
+
+<h3>Decision record / DDR (запись решения)</h3>
+<p>Короткий документ, фиксирующий <em>одно</em> принятое решение: контекст, само
+решение, отвергнутые альтернативы, последствия. Пишется один раз, после этого не
+редактируется. Аналог ADR из архитектуры ПО.<span class="cite">2,&nbsp;3</span>
+Не гниёт, потому что описывает прошлый выбор, а прошлое не меняется.</p>
+
+<h3>ADR (Architectural Decision Record)</h3>
+<p>Тот же формат, пришедший из разработки ПО. В этом курсе «ADR» и «decision record»
+взаимозаменяемы; для игрового контекста иногда пишут DDR (Design Decision Record).</p>
+
+<h3>RFC (Request for Comments)</h3>
+<p>Предложение изменения, выложенное на обсуждение до реализации. На GitHub это
+issue или discussion. Когда RFC принят, из него рождается decision record.<span class="cite">4,&nbsp;5</span></p>
+
+<h3>Vision doc (документ видения)</h3>
+<p>Одна страница: что это за игра по сути. Логлайн, формула «X, но Y», список того,
+чем игра <em>не</em> является. Меняется редко.</p>
+
+<h3>Design pillar (столб дизайна)</h3>
+<p>Одно из 3–5 базовых свойств опыта, через которые оценивается любая фича. Про
+<em>чувство</em> игрока, не про задачу. Хороший столб умеет говорить «нет».<span class="cite">6,&nbsp;7</span></p>
+
+<h3>Anti-pillar (анти-столб)</h3>
+<p>Явная формулировка «это значит, что мы НЕ делаем …», прикреплённая к столбу.
+Превращает красивое слово в работающий фильтр.<span class="cite">7</span></p>
+
+<h2>Свойства и статусы</h2>
+
+<h3>Append-only (только дозапись)</h3>
+<p>Правило ведения журнала решений: старые записи не редактируют и не удаляют. Ошиблись
+позже — пишут новую запись, которая <em>заменяет</em> старую по ссылке.<span class="cite">3</span></p>
+
+<h3>Superseded (заменено)</h3>
+<p>Статус записи решения, которую отменила более новая запись. Старая остаётся в
+журнале со ссылкой «Superseded by D-NNNN» — история решений сохраняется.<span class="cite">3</span></p>
+
+<h3>Vector (вектор проекта)</h3>
+<p>Направление развития игры: какие идеи в неё вписываются, какие — нет. «Держать
+вектор» = сделать так, чтобы контрибутор мог проверить соответствие сам, по столбам
+и записям решений, без ручного разбора мейнтейнером.</p>
+
+<h3>Rot (гниение документа)</h3>
+<p>Расхождение между тем, что написано в документе, и тем, что в игре. Описательные
+документы гниют по умолчанию; записи решений — нет.</p>
+
+<div class="sources">
+<strong>Источники</strong>
+<ol>
+<li><a href="https://mcvuk.com/development-news/death-of-the-game-design-document/">«Death of the Game Design Document», MCV/DEVELOP</a></li>
+<li><a href="https://adr.github.io/">adr.github.io — Architectural Decision Records</a></li>
+<li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html">AWS Prescriptive Guidance — ADR process</a></li>
+<li><a href="https://itnext.io/how-to-make-architecture-decisions-rfcs-adrs-and-getting-everyone-aligned-ab82e5384d2f">«RFCs, ADRs, and Getting Everyone Aligned», ITNEXT</a></li>
+<li><a href="https://technology.riotgames.com/news/tech-design-riot">«Tech Design at Riot», Riot Games Technology</a></li>
+<li><a href="https://gamedesignskills.com/game-design/design-pillars/">«Game Design Pillars», Game Design Skills</a></li>
+<li><a href="https://www.raspberrypi.com/news/how-pillars-and-triangles-can-focus-your-game-design/">«How pillars and triangles can focus your game design», Raspberry Pi Foundation</a></li>
+</ol>
+</div>
+
+<div class="lesson-nav">
+<span><a href="../lessons/0001-the-decision-record.html">Урок 0001 — Запись решения</a></span>
+<span><a href="decision-record-template.html">Шаблон записи решения &rarr;</a></span>
+</div>
+
+</div>

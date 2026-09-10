@@ -1,0 +1,192 @@
+/* CrystallEdge Docs Course — shared stylesheet
+   Linked by every lesson and reference doc so the course reads as one book.
+   Tufte-ish: serif body, generous margin, one column, muted ink, prints clean. */
+
+:root {
+  --ink: #1a1a1a;
+  --ink-soft: #555;
+  --ink-faint: #888;
+  --bg: #fdfdfb;
+  --rule: #d8d4cc;
+  --accent: #6b4fa0;        /* CrystallEdge violet */
+  --accent-soft: #efeaf7;
+  --good: #1f7a4d;
+  --bad: #b23b3b;
+  --code-bg: #f2f0ec;
+  --maxw: 40rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8e6e1;
+    --ink-soft: #b3afa6;
+    --ink-faint: #8a8578;
+    --bg: #17161a;
+    --rule: #3a3742;
+    --accent: #b6a0e6;
+    --accent-soft: #262233;
+    --good: #6cc79a;
+    --bad: #e08585;
+    --code-bg: #211f26;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
+               Georgia, Cambria, "Times New Roman", serif;
+  font-size: 19px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 4rem 1.25rem 6rem;
+}
+
+/* --- masthead ------------------------------------------------------------- */
+.masthead {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.6rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* --- headings ----------------------------------------------------------- */
+h1, h2, h3 {
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 2.4rem 0 0.8rem;
+}
+h1 {
+  font-size: 1.95rem;
+  margin-top: 0;
+  letter-spacing: -0.01em;
+}
+h1 .kicker {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.7rem;
+}
+h2 { font-size: 1.32rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.3rem; }
+h3 { font-size: 1.08rem; color: var(--ink-soft); }
+
+p, li { hyphens: auto; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+/* --- callouts --------------------------------------------------------- */
+.card {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.1rem 1.3rem;
+  margin: 1.6rem 0;
+  background: color-mix(in srgb, var(--bg) 70%, var(--accent-soft));
+}
+.card > :first-child { margin-top: 0; }
+.card > :last-child { margin-bottom: 0; }
+
+.label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.mission {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+/* --- code ----------------------------------------------------------- */
+code, pre, .mono {
+  font-family: "SF Mono", "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82em;
+}
+code { background: var(--code-bg); padding: 0.12em 0.35em; border-radius: 3px; }
+pre {
+  background: var(--code-bg);
+  padding: 1rem 1.15rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  line-height: 1.5;
+  border: 1px solid var(--rule);
+}
+pre code { background: none; padding: 0; }
+
+/* --- tables ------------------------------------------------------- */
+table { border-collapse: collapse; width: 100%; margin: 1.6rem 0; font-size: 0.9rem; }
+th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+
+/* --- footnotes / citations -------------------------------------- */
+.cite { font-size: 0.75em; vertical-align: super; line-height: 0; }
+.sources { font-size: 0.82rem; color: var(--ink-soft); border-top: 1px solid var(--rule); margin-top: 3rem; padding-top: 1rem; }
+.sources ol { padding-left: 1.2rem; }
+.sources li { margin: 0.35rem 0; }
+
+/* --- nav row --------------------------------------------------- */
+.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.8rem;
+  border-top: 1px solid var(--rule);
+  margin-top: 3rem;
+  padding-top: 1.2rem;
+}
+
+.ask {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.82rem;
+  background: var(--accent-soft);
+  color: var(--ink-soft);
+  border-radius: 6px;
+  padding: 0.85rem 1.1rem;
+  margin: 2.5rem 0 0;
+}
+.ask strong { color: var(--accent); }
+
+hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+.tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+@media print {
+  body { font-size: 11pt; background: #fff; color: #000; }
+  .wrap { max-width: none; padding: 0; }
+  .ask, .lesson-nav, .quiz button { display: none; }
+  a { color: #000; text-decoration: none; }
+  .card { break-inside: avoid; }
+}

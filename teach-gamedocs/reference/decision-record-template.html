@@ -1,0 +1,104 @@
+<title>Decision Record Template</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+<div class="masthead"><span>CrystallEdge Docs Course</span><span>Reference</span></div>
+
+<h1><span class="kicker">Reference</span>Шаблон записи решения</h1>
+
+<p>Копируй этот блок для каждого нового решения. Один файл — одно решение.
+Кладётся в игровой репозиторий: <code>/docs/decisions/D-0001-slug.md</code>.
+Добавляется через PR. После статуса <em>Accepted</em> файл не редактируется
+никогда<span class="cite">1</span>.</p>
+
+<h2>Шаблон (Markdown)</h2>
+
+<pre><code># D-0001: &lt;решение одной строкой, в настоящем времени&gt;
+
+- **Status:** Proposed | Accepted | Superseded
+- **Date:** 2026-09-10
+- **Supersedes:** &mdash;
+- **Superseded by:** &mdash;
+- **Pillars touched:** Sociality, Variability
+
+## Context
+Что заставило принять решение. Давление, ограничение, что видели на
+плейтестах. 2&ndash;5 предложений. Без вариантов и без вывода &mdash; только
+ситуация.
+
+## Decision
+Одно предложение, настоящее время, без «будем» и «наверное».
+«Мана берётся из общего островного резервуара.»
+
+## Why this, not the alternatives
+- **Отвергли &lt;вариант A&gt;:** &lt;причина, желательно со ссылкой на столб&gt;.
+- **Отвергли &lt;вариант B&gt;:** &lt;причина&gt;.
+
+## Consequences
+Что теперь становится правдой: что стало можно, что нельзя, что усложнилось.
+Это тот раздел, который читает контрибутор перед PR.
+</code></pre>
+
+<h2>Правила, которые держат журнал дешёвым</h2>
+
+<table>
+<tr><th>Правило</th><th>Зачем</th></tr>
+<tr><td>Никогда не редактируй принятую запись</td><td>Запись фиксирует прошлый выбор. Прошлое не меняется, значит запись не гниёт.<span class="cite">1</span></td></tr>
+<tr><td>Одно решение на файл</td><td>Появилось «а ещё» — это второе решение, заведи второй файл.</td></tr>
+<tr><td>Пиши сразу, пока решение свежее</td><td>15 минут один раз. Не возвращайся «дописать».</td></tr>
+<tr><td>Нумеруй подряд, храни в репо</td><td>На запись можно сослаться из PR: «противоречит D-0007».<span class="cite">2</span></td></tr>
+<tr><td>Ошибся — не правь, заменяй</td><td>Новая запись с «Supersedes: D-0007», у старой «Superseded by». История сохраняется.<span class="cite">1</span></td></tr>
+</table>
+
+<h2>Жизненный цикл</h2>
+<pre><code>идея &rarr;  RFC (issue/discussion)  &rarr;  обсудили  &rarr;  Accepted: PR добавляет D-NNNN
+                                                     &darr;
+                                        позже оказалось неверным
+                                                     &darr;
+                              новый RFC &rarr; D-MMMM со ссылкой Supersedes: D-NNNN
+</code></pre>
+<p>RFC предлагает и собирает мнения; запись решения фиксирует то, что вышло из
+обсуждения<span class="cite">2,&nbsp;3</span>.</p>
+
+<h2>Мини-пример</h2>
+<pre><code># D-0004: Смерть персонажа не завершает партию для игрока
+
+- **Status:** Accepted
+- **Date:** 2026-09-10
+- **Pillars touched:** Sociality, Variability
+
+## Context
+На плейтестах после гибели игрок 20+ минут сидит в лобби и уходит с сервера.
+Партии рассчитаны на 2&ndash;3 часа. Это бьёт по социальному ядру: выпавшие
+игроки = меньше взаимодействий у оставшихся.
+
+## Decision
+После смерти игрок в течение минуты получает нового персонажа-новичка на
+острове, без имущества и репутации прежнего.
+
+## Why this, not the alternatives
+- **Отвергли перманентную смерть до конца партии:** прямой удар по столбу Sociality.
+- **Отвергли воскрешение в том же теле:** обнуляет значимость провала (Variability).
+
+## Consequences
+- Любой контент про смерть должен учитывать быстрый респавн (никаких
+  «сюжетных» смертей без возврата).
+- Экономика не может завязываться на то, что имущество умершего исчезает навсегда.
+- Открывает дизайн-пространство: репутация как ресурс, который жаль терять.
+</code></pre>
+
+<div class="sources">
+<strong>Источники</strong>
+<ol>
+<li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html">AWS Prescriptive Guidance — ADR process (статусы, суперсессия, append-only)</a></li>
+<li><a href="https://adr.github.io/">adr.github.io — Architectural Decision Records</a></li>
+<li><a href="https://itnext.io/how-to-make-architecture-decisions-rfcs-adrs-and-getting-everyone-aligned-ab82e5384d2f">«RFCs, ADRs, and Getting Everyone Aligned», ITNEXT</a></li>
+</ol>
+</div>
+
+<div class="lesson-nav">
+<span><a href="../lessons/0001-the-decision-record.html">&larr; Урок 0001</a></span>
+<span><a href="glossary.html">Глоссарий</a></span>
+</div>
+
+</div>
