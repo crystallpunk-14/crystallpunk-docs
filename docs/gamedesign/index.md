@@ -1,6 +1,7 @@
 ---
 banner: gd_banner.png
 accent: '#9deef1'
+navigationFolder: '.'
 description: Видение проекта, столбы дизайна и журнал принятых решений.
 buttons:
   - pillars/complexity
