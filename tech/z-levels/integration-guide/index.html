@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="ru" style="--accent: #fe6e00;"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Руководство по интеграции Z-уровней — CrystallEdge Docs</title><meta property="og:title" content="Руководство по интеграции Z-уровней — CrystallEdge Docs"><meta property="og:type" content="website"><link rel="icon" href="/crystallpunk-docs/logo.png"><link rel="stylesheet" href="/crystallpunk-docs/_astro/SectionButtons.C0s475JW.css"></head><body><header class="site-header"><div class="site-header__inner"><a class="site-header__home" href="/crystallpunk-docs/"><img class="site-header__logo" src="/crystallpunk-docs/logo.png" alt="" width="26" height="26"><span>CrystallEdge</span></a></div></header><main><div class="doc-layout"><!-- details/summary даёт сворачивание на телефоне без единой строки JS:
+     на широком экране summary скрыт через CSS, и блок всегда раскрыт. --><details class="sidebar" open><summary class="sidebar__summary">Содержание</summary><p class="sidebar__heading">Техническая документация</p><nav aria-label="Навигация по разделу"><ul class="nav-tree"><li><a href="/crystallpunk-docs/tech/z-levels/">Z-уровни</a><ul><li><a href="/crystallpunk-docs/tech/z-levels/z-level-mapping/">Маппинг с z-уровнями</a></li><li><a href="/crystallpunk-docs/tech/z-levels/integration-guide/" aria-current="page">Руководство по интеграции Z-уровней</a></li></ul></li></ul></nav></details><article class="doc-main"><div class="doc-header"><div class="doc-header__rule"></div><span class="doc-header__eyebrow">Техническая документация</span></div><div class="prose"><h1 id="руководство-по-интеграции-z-уровней">Руководство по интеграции Z-уровней</h1>
+<p>Система Z-уровней в CrystallEdge саблицензирована под MIT лицензию, и это руководство призвано помочь объяснить как интегрировать эту систему в другие проекты.</p>
+<h2 id="минимальная-рабочая-настройка">Минимальная рабочая настройка</h2>
+<ul>
+<li>Скопируйте все содержимое <code>_CE/ZLevels</code> папок в <code>Shared</code>, <code>Server</code> и <code>Client</code> частях.</li>
+<li>Найдите в клиенте <code>ScalingViewport</code>, сделайте его partial и обновите рендеринг, по аналогии <a href="https://github.com/crystallpunk-14/crystall-edge/blob/e533afb11e36a512a7b32a9d326ec261f19b1c0d/Content.Client/Viewport/ScalingViewport.cs#L153-L155">как это сделано в CE репозитории</a>.</li>
+<li>Почините все импорты, Убедитесь что ни в одном файле нет ошибок. Для этого придется добавить некоторые дополнительные поля в ванильные прототипы и компоненты.
+<ul>
+<li><code>CEPvsOverrideSystem</code> и <code>CEPvsOverrideComponent</code> так же саблицензированы под MIT и вы можете их себе портировать, либо заменить на стандартные <code>_pvs.AddGlobalOverride</code> и <code>_pvs.RemoveGlobalOverride</code> функции.</li>
+<li>Все ассеты, такие как прототипы акшенов, шейдеры - саблицензированы под CC свободную лицензию и вы можете скопировать их себе, либо сделать свои варианты.
+<ul>
+<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/master/Resources/Textures/_CE/Shaders/zblur.swsl">Шейдер размытия</a></li>
+<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/master/Resources/Prototypes/_CE/Shaders/shaders.yml#L22-L25">Прототип шейдера</a></li>
+<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/ca1795d821637af1ba6faaf964ee598e020e1290/Resources/Prototypes/_CE/Entities/Actions/zLevels.yml">Прототипы акшенов для призраков</a></li>
+</ul>
+</li>
+<li><code>ContentTileDefinition</code> получил поле <a href="https://github.com/crystallpunk-14/crystall-edge/blob/ca1795d821637af1ba6faaf964ee598e020e1290/Content.Shared/Maps/ContentTileDefinition.cs#L134C63-L140C41">Transparent</a>, который нужно вручную проставить на true во все “прозрачные” тайлы в вашем проекте, <a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Resources/Prototypes/Tiles/space.yml#L8">включая стандартные тайлы космоса</a>.</li>
+<li><code>CEZLevelGhostMoverComponent</code> необходимо добавить на <a href="https://github.com/crystallpunk-14/crystall-edge/blob/ca1795d821637af1ba6faaf964ee598e020e1290/Resources/Prototypes/Entities/Mobs/Player/observer.yml#L31-L33">прототипы призраков</a> и других летающих призрачных сущностей, чтобы те могли двигаться сквозь z-уровни.</li>
+<li>Необходимо отредактировать <code>ParallaxOverlay</code>, в методе <code>BeforeDraw()</code> добавив <a href="https://github.com/crystallpunk-14/crystall-edge/blob/e533afb11e36a512a7b32a9d326ec261f19b1c0d/Content.Client/Parallax/ParallaxOverlay.cs#L43-L48">отключение рендеринга параллакса</a>, если это не самый нижний видимый z-уровень.</li>
+<li>Добавьте в свой репозиторий прототип
+<img width="336" height="139" alt="image" src="https://github.com/user-attachments/assets/23e10e94-f7d1-4c3b-99f5-d7e315d0bfe0" /></li>
+<li>Необходимо добавить <code>CEZPhysicsComponent</code> на все сущности, которые по вашему мнению должны перемещаться между z-уровнями посредством гравитации.
+<ul>
+<li>Не нужно добавлять этот компонент на ВСЕ сущности, так как это сильно нагружает сервер. Стены, например, могут спокойно обойтись и без z-физики, так как никогда не откручиваются.</li>
+<li>Добавляйте на <code>BaseItem</code>, мобов, откручиваемые структуры.</li>
+</ul>
+</li>
+<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Client/Damage/Systems/StaminaSystem.cs#L18">Ключ анимации выносливости сделан публичным</a>, чтобы анимация выносливости автоматически обновлялась под текущую высоту персонажа.</li>
+</ul>
+</li>
+</ul>
+<h2 id="вторичные-фиксы">Вторичные фиксы</h2>
+<p>Если выше описаны минимальные изменения, которые нужно произвести чтобы просто запустить z-уровни в вашем репозитории. То, есть еще точно много мелких изменений в коде Wizden, которые фиксят отдельные не критичные проблемы.</p>
+<ul>
+<li><code>Weather Stensil Overlay</code> получал небольшие фиксы (<a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Client/Overlays/StencilOverlay.Weather.cs#L46">фикс 1</a>, <a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Client/Overlays/StencilOverlay.Weather.cs#L23">фикс 2</a>), чтобы включить пустые тайлы в проверку, нужно ли рисовать погоду, учитывая что над пустыми тайлами может быть крыша.</li>
+<li><code>LandEvent</code> <a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Shared/Throwing/ThrownItemSystem.cs#L133-L136">имеет фикс</a>, который убирает срабатывание ивента, если под сущностью нет пола. Отключает разбивание яиц в воздухе после броска. <code>LandEvent</code> вызывается вручную по приземлению после падения.</li>
+<li>Для цикла дня и ночи и цикла теней был убран случайный стартовый сдвиг, чтобы синхронизировать освещение на всех уровнях. <a href="https://github.com/crystallpunk-14/crystall-edge/blob/bd5aaf45e5f71bd17cbd23cfbdf923cc92d2cec4/Content.Shared/Light/Components/LightCycleComponent.cs#L31">Тык 1</a></li>
+<li><a href="https://github.com/crystallpunk-14/crystall-edge/blob/c37eebf47dc65af43fba0b73fa2fba116ab9a2d8/Content.Shared/Movement/Systems/SharedMoverController.Input.cs#L274-L283">Отключен сброс поворота камеры</a> при переходе между Z-уровнями.</li>
+</ul>
+<h2 id="отслеживание-изменений">Отслеживание изменений</h2>
+<p>Для удобства отслеживания PR-ов, редактирующих и улучшающих z-уровни, вы можете отфильтровать их по zLevels метке в репозитории:</p>
+<p><a href="https://github.com/crystallpunk-14/crystall-edge/pulls?q=is%3Apr+label%3AzLevels+is%3Aclosed">Pull requests</a></p>
+</div></article></div></main><footer class="site-footer"><div class="site-footer__inner"><span>Документация проекта CrystallEdge</span><span><a href="https://github.com/crystallpunk-14/crystallpunk-docs">Исходники сайта</a> · <a href="https://github.com/crystallpunk-14/crystall-punk-14">Репозиторий игры</a></span></div></footer></body></html>

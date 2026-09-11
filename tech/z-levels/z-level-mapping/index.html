@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="ru" style="--accent: #fe6e00;"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Маппинг с z-уровнями — CrystallEdge Docs</title><meta property="og:title" content="Маппинг с z-уровнями — CrystallEdge Docs"><meta property="og:type" content="website"><link rel="icon" href="/crystallpunk-docs/logo.png"><link rel="stylesheet" href="/crystallpunk-docs/_astro/SectionButtons.C0s475JW.css"></head><body><header class="site-header"><div class="site-header__inner"><a class="site-header__home" href="/crystallpunk-docs/"><img class="site-header__logo" src="/crystallpunk-docs/logo.png" alt="" width="26" height="26"><span>CrystallEdge</span></a></div></header><main><div class="doc-layout"><!-- details/summary даёт сворачивание на телефоне без единой строки JS:
+     на широком экране summary скрыт через CSS, и блок всегда раскрыт. --><details class="sidebar" open><summary class="sidebar__summary">Содержание</summary><p class="sidebar__heading">Техническая документация</p><nav aria-label="Навигация по разделу"><ul class="nav-tree"><li><a href="/crystallpunk-docs/tech/z-levels/">Z-уровни</a><ul><li><a href="/crystallpunk-docs/tech/z-levels/z-level-mapping/" aria-current="page">Маппинг с z-уровнями</a></li><li><a href="/crystallpunk-docs/tech/z-levels/integration-guide/">Руководство по интеграции Z-уровней</a></li></ul></li></ul></nav></details><article class="doc-main"><div class="doc-header"><div class="doc-header__rule"></div><span class="doc-header__eyebrow">Техническая документация</span></div><div class="prose"><h1 id="маппинг-с-z-уровнями">Маппинг с z-уровнями</h1>
+<p>Перед началом маппинга, убедитесь что вы находитесь не в <code>Debug</code> сборке а в <code>Tools</code> или <code>Release</code></p>
+<h2 id="инициализация-маппинга-новой-карты">Инициализация маппинга новой карты</h2>
+<p>Чтобы начать маппинг с z-уровнями, вам для начала необходимо сделать <code>GameMapPrototype</code> с настроенными слоями.</p>
+<p>!!! warning “Будет исправлено в будущем”
+Привязка к <code>GameMapPrototype</code> - временное решение, которое будет исправлено в будущем. Отслеживание этой задачи ведется <a href="https://github.com/crystallpunk-14/crystall-edge/issues/173?issue=crystallpunk-14%7Ccrystall-edge%7C176">Здесь</a></p>
+<p>Конечно же, для начала маппинга новой карты у вас нет файлов карт для каждого слоя, поэтому я использую отдельную пустую карту для инициализации. Вы можете скопировать ее по пути:</p>
+<pre class="astro-code vitesse-dark" style="background-color:#121212;color:#dbd7caee; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Resources/Maps/_CE/Empty.yml</span></span></code></pre>
+<p>Это пустая планетарная карта.</p>
+<p>Это должно выглядеть следующим образом:</p>
+<pre class="astro-code vitesse-dark" style="background-color:#121212;color:#dbd7caee; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yml"><code><span class="line"><span style="color:#666666">-</span><span style="color:#B8A965"> type</span><span style="color:#666666">:</span><span style="color:#C98A7D"> gameMap</span></span>
+<span class="line"><span style="color:#B8A965">  id</span><span style="color:#666666">:</span><span style="color:#C98A7D"> ZMappingTest</span></span>
+<span class="line"><span style="color:#B8A965">  mapName</span><span style="color:#666666">:</span><span style="color:#C98A7D"> ZMappingTest</span></span>
+<span class="line"><span style="color:#B8A965">  mapPath</span><span style="color:#666666">:</span><span style="color:#C98A7D"> /Maps/_CE/Empty.yml</span></span>
+<span class="line"><span style="color:#B8A965">  minPlayers</span><span style="color:#666666">:</span><span style="color:#4C9A91"> 0</span></span>
+<span class="line"><span style="color:#B8A965">  stations</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#B8A965">    Dev</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#B8A965">      components</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#666666">        -</span><span style="color:#B8A965"> type</span><span style="color:#666666">:</span><span style="color:#C98A7D"> CEStationZLevels</span></span>
+<span class="line"><span style="color:#B8A965">          mapsAbove</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#666666">            -</span><span style="color:#C98A7D"> /Maps/_CE/Empty.yml</span></span>
+<span class="line"><span style="color:#666666">            -</span><span style="color:#C98A7D"> /Maps/_CE/Empty.yml</span></span>
+<span class="line"><span style="color:#B8A965">          mapsBelow</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#666666">            -</span><span style="color:#C98A7D"> /Maps/_CE/Empty.yml</span></span>
+<span class="line"><span style="color:#666666">            -</span><span style="color:#C98A7D"> /Maps/_CE/Empty.yml</span></span>
+<span class="line"><span style="color:#B8A965">          zLevelsComponentOverrides</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#758575DD">            # Любые компоненты, которые вы хотите чтобы были добавлены на все карты z-уровней. Гравитация, Атмосфера, освещение, параллаксы и т.д.</span></span>
+<span class="line"><span style="color:#758575DD">      # Дальше стандартная настройка gameMap</span></span></code></pre>
+<p>Внутри игры вы прописываете команду <code>znetwork-mapping Dev</code>. Автокомплит должен автоматически подсказать вам все валидные gameMapPrototype, у которых есть z-уровни.</p>
+<h2 id="маппинг">Маппинг</h2>
+<p>Сам процесс маппинге не имеет значительных отличий от стандратного маппинга. Не забудьте убедиться, что вы выдали призракам компонент CEZLevelGhostMoverComponent, чтобы иметь возможность двигаться по z-уровням во время маппинга.</p>
+<p>!!! warning “Автосохранения”
+На текущий момент автосохранения отсутствуют для маппинга z-уровней. Отслеживание этой задачи ведется <a href="https://github.com/crystallpunk-14/crystall-edge/issues/173?issue=crystallpunk-14%7Ccrystall-edge%7C188">Здесь</a></p>
+<p>Вы можете использовать команду <code>znetwork-variantize</code> чтобы рандомизировать внешность всех тайлов на всех з-уровнях.</p>
+<p>Команда <code>znetwork-initialize</code> не рекомендуется к использованию на текущий момент, т.к. хоть и инициализирует все слои, но не добавляет им компонентов которые прописаны в gameMapPrototype. То есть освещения солнца например, не будет.</p>
+<p>Команда <code>znetwork-remove</code> Удаляет все карты z-уровней.</p>
+<h2 id="сохранение">Сохранение</h2>
+<p>Используйте команду <code>znetwork-save</code> на нужную вам сеть z-уровней, и укажите название этой сети. Например <code>znetwork-save ZMappingTest</code>. Это сохранит все карты этой сети znetwork, и вы сможете найти их по пути:</p>
+<pre class="astro-code vitesse-dark" style="background-color:#121212;color:#dbd7caee; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>.../bin/Content.Server/data/ZNetworkSaves/ZMappingTest</span></span>
+<span class="line"><span>    ZMappingTest-2.yml</span></span>
+<span class="line"><span>    ZMappingTest-1.yml</span></span>
+<span class="line"><span>    ZMappingTest0.yml</span></span>
+<span class="line"><span>    ZMappingTest1.yml</span></span>
+<span class="line"><span>    ZMappingTest2.yml</span></span></code></pre>
+<p>в этой папке будут лежать все z-карты проименованные вашим названием сети + z-уровнем.</p>
+<p>Все что вам осталось - скопировать эту папку в файлы ресурсов игры, например:</p>
+<pre class="astro-code vitesse-dark" style="background-color:#121212;color:#dbd7caee; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Resources/Maps/_CE/ZMappingTest</span></span></code></pre>
+<p>и перезаписать <code>GameMapPrototype</code> вашей карты, чтобы она ссылалась на новые файлы:</p>
+<pre class="astro-code vitesse-dark" style="background-color:#121212;color:#dbd7caee; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yml"><code><span class="line"><span style="color:#B8A965">  mapsBelow</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#666666">  -</span><span style="color:#C98A7D"> /Maps/_CE/ZMappingTest/ZMappingTest-2.yml</span></span>
+<span class="line"><span style="color:#666666">  -</span><span style="color:#C98A7D"> /Maps/_CE/ZMappingTest/ZMappingTest-1.yml</span></span>
+<span class="line"><span style="color:#B8A965">  mapsAbove</span><span style="color:#666666">:</span></span>
+<span class="line"><span style="color:#666666">  -</span><span style="color:#C98A7D"> /Maps/_CE/ZMappingTest/ZMappingTest1.yml</span></span>
+<span class="line"><span style="color:#666666">  -</span><span style="color:#C98A7D"> /Maps/_CE/ZMappingTest/ZMappingTest2.yml</span></span></code></pre>
+</div></article></div></main><footer class="site-footer"><div class="site-footer__inner"><span>Документация проекта CrystallEdge</span><span><a href="https://github.com/crystallpunk-14/crystallpunk-docs">Исходники сайта</a> · <a href="https://github.com/crystallpunk-14/crystall-punk-14">Репозиторий игры</a></span></div></footer></body></html>
