@@ -1,0 +1,45 @@
+---
+// Шрифты подключаются самохостом: fonts.googleapis.com в России нестабилен,
+// а весь контент сайта кириллический — внешняя зависимость тут недопустима.
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/jetbrains-mono';
+import '@fontsource-variable/source-serif-4';
+import '../styles/global.css';
+
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { withBase } from '../lib/docs';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Акцентный цвет страницы; переопределяет золотой по умолчанию. */
+  accent?: string;
+}
+
+const { title, description, accent } = Astro.props;
+
+const siteName = 'CrystallEdge Docs';
+const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+---
+
+<!doctype html>
+<html lang="ru" style={accent ? `--accent: ${accent};` : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={fullTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+    <link rel="icon" href={withBase('logo.png')} />
+  </head>
+  <body>
+    <SiteHeader />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

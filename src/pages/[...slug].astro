@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Banner from '../components/Banner.astro';
+import Sidebar from '../components/Sidebar.astro';
+import DocIndex from '../components/DocIndex.astro';
+import SectionButtons from '../components/SectionButtons.astro';
+import {
+  pages,
+  buildNav,
+  resolveConfig,
+  bannerUrl,
+  getSectionByName,
+  type Page,
+} from '../lib/docs';
+
+export function getStaticPaths() {
+  // Корневой index.md обслуживает pages/index.astro со своей вёрсткой героя.
+  return pages
+    .filter((page) => page.routeSlug !== '')
+    .map((page) => ({ params: { slug: page.routeSlug }, props: { page } }));
+}
+
+interface Props {
+  page: Page;
+}
+
+const { page } = Astro.props;
+const config = resolveConfig(page);
+const Content = page.Content as any;
+
+const banner = bannerUrl(config.banner);
+const nav = config.navigationFolder ? buildNav(config.navigationFolder) : [];
+
+const section = getSectionByName(page.section);
+// Надзаголовок нужен только на внутренних страницах: на обложке раздела
+// он дословно повторял бы заголовок ниже.
+const eyebrow = section && section.path !== page.path ? section.title : null;
+---
+
+<BaseLayout title={page.title} description={config.description} accent={config.accent}>
+  {banner && <Banner src={banner} alt="" />}
+
+  <div class:list={['doc-layout', nav.length === 0 && 'doc-layout--solo']}>
+    {
+      nav.length > 0 && (
+        <Sidebar nodes={nav} currentUrl={Astro.url.pathname} heading={section?.title ?? 'Документация'} />
+      )
+    }
+
+    <article class="doc-main">
+      <div class="doc-header">
+        <div class="doc-header__rule"></div>
+        {eyebrow && <span class="doc-header__eyebrow">{eyebrow}</span>}
+      </div>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      {/* buttons — собственное поле страницы, не наследуется: как banner и order. */}
+      {page.frontmatter.buttons && (
+        <SectionButtons fromDir={page.dir} targets={page.frontmatter.buttons} />
+      )}
+
+      {page.isIndex && nav.length > 0 && <DocIndex nodes={nav} />}
+    </article>
+  </div>
+</BaseLayout>

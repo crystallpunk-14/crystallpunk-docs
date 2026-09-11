@@ -1,0 +1,47 @@
+---
+// Автосписок документов на обложке раздела — строится из того же дерева,
+// что и боковая навигация, поэтому руками его вести не нужно.
+import type { NavNode } from '../lib/docs';
+
+interface Props {
+  nodes: NavNode[];
+}
+
+const { nodes } = Astro.props;
+
+const leaves = nodes.filter((node) => node.kind === 'page');
+const groups = nodes.filter((node) => node.kind === 'group');
+---
+
+{
+  leaves.length > 0 && (
+    <ul class="doc-index">
+      {leaves.map((node) => (
+        <li class="doc-index__item">
+          <a class="doc-index__link" href={node.url!}>
+            {node.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+{
+  groups.map((group) => (
+    <div class="doc-index__group">
+      <p class="doc-index__group-label">{group.title}</p>
+      <ul class="doc-index">
+        {group.children
+          .filter((child) => child.url)
+          .map((child) => (
+            <li class="doc-index__item">
+              <a class="doc-index__link" href={child.url!}>
+                {child.title}
+              </a>
+            </li>
+          ))}
+      </ul>
+    </div>
+  ))
+}

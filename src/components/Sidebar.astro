@@ -1,0 +1,22 @@
+---
+import NavTree from './NavTree.astro';
+import type { NavNode } from '../lib/docs';
+
+interface Props {
+  nodes: NavNode[];
+  currentUrl: string;
+  heading: string;
+}
+
+const { nodes, currentUrl, heading } = Astro.props;
+---
+
+<!-- details/summary даёт сворачивание на телефоне без единой строки JS:
+     на широком экране summary скрыт через CSS, и блок всегда раскрыт. -->
+<details class="sidebar" open>
+  <summary class="sidebar__summary">Содержание</summary>
+  <p class="sidebar__heading">{heading}</p>
+  <nav aria-label="Навигация по разделу">
+    <NavTree nodes={nodes} currentUrl={currentUrl} root />
+  </nav>
+</details>

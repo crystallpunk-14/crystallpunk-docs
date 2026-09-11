@@ -1,0 +1,34 @@
+---
+// Рекурсивный список навигации: файлы — ссылки, подпапки — вложенные группы.
+import type { NavNode } from '../lib/docs';
+
+interface Props {
+  nodes: NavNode[];
+  currentUrl: string;
+  /** true только для корневого вызова, чтобы не плодить вложенные <ul class>. */
+  root?: boolean;
+}
+
+const { nodes, currentUrl, root = false } = Astro.props;
+
+/** Сравнение без учёта финального слэша — Astro может отдать URL и с ним, и без. */
+const isCurrent = (url: string | null) =>
+  url !== null && url.replace(/\/+$/, '') === currentUrl.replace(/\/+$/, '');
+---
+
+<ul class={root ? 'nav-tree' : undefined}>
+  {
+    nodes.map((node) => (
+      <li>
+        {node.url ? (
+          <a href={node.url} aria-current={isCurrent(node.url) ? 'page' : undefined}>
+            {node.title}
+          </a>
+        ) : (
+          <span class="nav-tree__group-label">{node.title}</span>
+        )}
+        {node.children.length > 0 && <Astro.self nodes={node.children} currentUrl={currentUrl} />}
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,39 @@
+---
+// Сетка цветных кнопок-ссылок. Управляется через frontmatter buttons любой
+// страницы — имена резолвятся относительно папки, в которой объявлены
+// (тот же принцип, что у navigationFolder), так что новый набор кнопок
+// не требует кода, только список имён файлов в frontmatter.
+import { resolveRelativePage, resolveConfig } from '../lib/docs';
+
+interface Props {
+  /** Папка страницы, объявившей buttons — от неё резолвятся имена целей. */
+  fromDir: string;
+  targets: string[];
+}
+
+const { fromDir, targets } = Astro.props;
+
+const buttons = targets
+  .map((name) => resolveRelativePage(fromDir, name))
+  .filter((page) => page !== undefined);
+---
+
+{
+  buttons.length > 0 && (
+    <div class="section-buttons">
+      {buttons.map((page) => {
+        const config = resolveConfig(page);
+        return (
+          <a
+            class="section-button"
+            href={page.url}
+            style={config.accent ? `--accent: ${config.accent};` : undefined}
+          >
+            <span class="section-button__label">{page.title}</span>
+            {config.description && <span class="section-button__hint">{config.description}</span>}
+          </a>
+        );
+      })}
+    </div>
+  )
+}

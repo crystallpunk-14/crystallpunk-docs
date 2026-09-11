@@ -1,0 +1,15 @@
+---
+// Шапка-арт в стиле Steam: увеличенная размытая копия арта растекается цветом
+// в фон страницы, поверх неё — резкий арт по центру с ограниченной шириной.
+interface Props {
+  src: string;
+  alt?: string;
+}
+
+const { src, alt = '' } = Astro.props;
+---
+
+<div class="banner">
+  <div class="banner__glow" style={`background-image: url("${src}")`} aria-hidden="true"></div>
+  <img class="banner__art" src={src} alt={alt} />
+</div>

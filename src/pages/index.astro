@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Banner from '../components/Banner.astro';
+import SectionButtons from '../components/SectionButtons.astro';
+import { homePage, resolveConfig, bannerUrl } from '../lib/docs';
+
+if (!homePage) throw new Error('Не найден docs/index.md — главная страница строится из него.');
+
+const config = resolveConfig(homePage);
+const banner = bannerUrl(config.banner);
+const Content = homePage.Content as any;
+---
+
+<BaseLayout title={homePage.title} description={config.description}>
+  {banner && <Banner src={banner} />}
+
+  <div class="home__hero">
+    <h1 class="home__title">{homePage.title}</h1>
+    {config.description && <p class="home__tagline">{config.description}</p>}
+  </div>
+
+  <SectionButtons fromDir={homePage.dir} targets={homePage.frontmatter.buttons ?? []} />
+
+  <div class="doc-layout doc-layout--solo home__body">
+    <div class="doc-main prose">
+      <Content />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Заголовок уже отрисован в герое — в теле документа он был бы дублем. */
+  .home__body :global(h1) {
+    display: none;
+  }
+</style>

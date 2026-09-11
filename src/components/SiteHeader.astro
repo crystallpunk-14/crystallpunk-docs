@@ -1,0 +1,13 @@
+---
+// Шапка намеренно минимальна и не липкая: только возврат на главную.
+import { withBase } from '../lib/docs';
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__home" href={withBase('')}>
+      <img class="site-header__logo" src={withBase('logo.png')} alt="" width="26" height="26" />
+      <span>CrystallEdge</span>
+    </a>
+  </div>
+</header>
