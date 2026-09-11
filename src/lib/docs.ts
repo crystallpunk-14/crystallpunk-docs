@@ -2,7 +2,8 @@
  * Ядро сайта: превращает дерево файлов docs/ в страницы и навигацию.
  *
  * Правила, на которых всё держится:
- *  - страницей становится любой .md внутри docs/;
+ *  - страницей становится любой .md внутри docs/, кроме файлов, чьё имя
+ *    начинается с "_" (как _template.md) — та же логика, что у docs/_assets;
  *  - заголовок берётся из первого H1 внутри файла, никогда из frontmatter;
  *  - числовой префикс имени файла (01-, 02-) задаёт порядок и вырезается из URL;
  *  - accent и navigationFolder наследуются от index.md вышестоящих папок,
@@ -25,6 +26,12 @@ export interface PageFrontmatter {
   buttons?: string[];
   /** Подпись под заголовком. */
   description?: string;
+  /** Дата документа, ISO "ГГГГ-ММ-ДД". Не наследуется. Используется в ADR. */
+  date?: string;
+  /** Слаги тегов из tags.yml. Не наследуется. Используется в ADR. */
+  tags?: string[];
+  /** Номера ADR, которые подавляет этот документ. Не наследуется. */
+  supersedes?: number[];
 }
 
 export interface Page {
@@ -107,6 +114,7 @@ function buildPage(moduleId: string, mod: MdModule): Page {
 }
 
 export const pages: Page[] = Object.entries(modules)
+  .filter(([id]) => !id.split('/').pop()!.startsWith('_'))
   .map(([id, mod]) => buildPage(id, mod))
   .sort((a, b) => a.path.localeCompare(b.path));
 
@@ -249,6 +257,30 @@ export function resolveRelativePage(fromDir: string, target: string): Page | und
 }
 
 export const homePage = byPath.get('index');
+
+function parentDirOf(dir: string): string {
+  const segments = dir.split('/').filter(Boolean);
+  segments.pop();
+  return segments.join('/');
+}
+
+/**
+ * Ближайший предок с index.md — для кнопки «назад», единой для любой
+ * страницы сайта. Не просто папка на уровень выше: если в ней своего
+ * index.md нет (как у gamedesign/pillars/), поднимается дальше вверх,
+ * пока не найдёт папку, у которой он есть; в конце падает на главную.
+ * Для самой главной возвращает undefined — отступать уже некуда.
+ */
+export function getParent(page: Page): Page | undefined {
+  if (page.path === 'index') return undefined;
+
+  let dir = page.isIndex ? parentDirOf(page.dir) : page.dir;
+  for (;;) {
+    const candidate = indexOf(dir);
+    if (candidate && candidate.path !== page.path) return candidate;
+    dir = parentDirOf(dir);
+  }
+}
 
 /** Баннер может быть внешней ссылкой или файлом из docs/_assets. */
 export function bannerUrl(banner: string | undefined): string | null {

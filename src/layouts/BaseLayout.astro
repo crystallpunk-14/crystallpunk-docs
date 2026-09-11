@@ -8,7 +8,7 @@ import '../styles/global.css';
 
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { withBase } from '../lib/docs';
+import { pages, getParent, withBase } from '../lib/docs';
 
 interface Props {
   title: string;
@@ -21,6 +21,13 @@ const { title, description, accent } = Astro.props;
 
 const siteName = 'CrystallEdge Docs';
 const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+
+// Кнопка «назад» — общая часть каждой страницы, а не то, что вызывающий
+// компонент передаёт руками: текущая страница вычисляется по URL, дальше
+// getParent сам поднимается по дереву папок.
+const currentPath = Astro.url.pathname.replace(import.meta.env.BASE_URL, '').replace(/\/+$/, '');
+const currentPage = pages.find((page) => page.routeSlug === currentPath);
+const backTarget = currentPage ? getParent(currentPage) : undefined;
 ---
 
 <!doctype html>
@@ -37,6 +44,13 @@ const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
   </head>
   <body>
     <SiteHeader />
+    {
+      backTarget && (
+        <div class="page-back">
+          <a href={backTarget.url}>← {backTarget.title}</a>
+        </div>
+      )
+    }
     <main>
       <slot />
     </main>

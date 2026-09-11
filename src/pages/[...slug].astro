@@ -14,9 +14,14 @@ import {
 } from '../lib/docs';
 
 export function getStaticPaths() {
-  // Корневой index.md обслуживает pages/index.astro со своей вёрсткой героя.
+  // Корневой index.md обслуживает pages/index.astro, а
+  // docs/gamedesign/decisions/index.md — pages/gamedesign/decisions/index.astro:
+  // содержимое там зависит от данных по ВСЕМ файлам папки разом (статусы ADR),
+  // обычный markdown-рендер этого не выразит. Astro выносит getStaticPaths в
+  // отдельный чанк без замыкания на внешние module-level константы, поэтому
+  // список путей задан прямо здесь, а не вынесенной переменной.
   return pages
-    .filter((page) => page.routeSlug !== '')
+    .filter((page) => page.routeSlug !== '' && page.path !== 'gamedesign/decisions/index')
     .map((page) => ({ params: { slug: page.routeSlug }, props: { page } }));
 }
 

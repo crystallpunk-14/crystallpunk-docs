@@ -1,0 +1,164 @@
+---
+import type { AdrEntry } from '../lib/adr';
+
+interface Props {
+  entry: AdrEntry;
+}
+
+const { entry } = Astro.props;
+
+const number = `#${String(entry.number).padStart(4, '0')}`;
+const tagSlugs = entry.tags.map((tag) => tag.slug).join(',');
+const supersededByNumber = entry.supersededBy ? `#${String(entry.supersededBy.number).padStart(4, '0')}` : null;
+---
+
+<a
+  class="adr-card"
+  href={entry.page.url}
+  data-status={entry.status}
+  data-tags={tagSlugs}
+  data-search={entry.searchText}
+  title={entry.status === 'superseded' && entry.supersededBy ? `Заменено ${supersededByNumber} «${entry.supersededBy.title}»` : undefined}
+>
+  <div class="adr-card__head">
+    <span class="adr-card__number">{number}</span>
+    <span class={`adr-card__status adr-card__status--${entry.status}`}>
+      {entry.status === 'accepted' ? 'Принято' : `Заменено ${supersededByNumber}`}
+    </span>
+  </div>
+
+  <h3 class="adr-card__title">{entry.title}</h3>
+
+  {entry.date && <span class="adr-card__date">{entry.date}</span>}
+
+  {
+    entry.tags.length > 0 && (
+      <div class="adr-card__tags">
+        {entry.tags.map((tag) => (
+          <span class="tag-chip" style={`--tag-color: ${tag.color};`}>
+            {tag.label}
+          </span>
+        ))}
+      </div>
+    )
+  }
+</a>
+
+<style>
+  /* Та же формула, что у .section-button на главной: заливка + подсвеченная
+     рамка цветом акцента, лёгкий подъём при наведении. Карточка «принято»
+     должна читаться как активная, действующая единица журнала. */
+  .adr-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+    border-radius: var(--radius);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
+      var(--card);
+    color: var(--fg);
+    transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease, opacity 0.18s ease,
+      filter 0.18s ease;
+  }
+  .adr-card:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
+      var(--card);
+  }
+  .adr-card[hidden] {
+    display: none;
+  }
+
+  /* Заменённые решения выпадают из «активного» вида: заливка и рамка гаснут
+     до нейтральных, подъём при наведении отключается — это архив, не текущее. */
+  .adr-card[data-status='superseded'] {
+    border-color: var(--line);
+    background: var(--band);
+    filter: grayscale(1);
+    opacity: 0.55;
+  }
+  .adr-card[data-status='superseded']:hover {
+    transform: none;
+    border-color: var(--line-strong);
+    background: var(--band);
+    opacity: 0.85;
+  }
+  .adr-card[data-status='superseded'] .adr-card__title {
+    color: var(--fg-subtle);
+  }
+
+  .adr-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .adr-card__number {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--fg-label);
+  }
+  .adr-card[data-status='accepted'] .adr-card__number {
+    color: var(--accent);
+  }
+
+  .adr-card__status {
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .adr-card__status--accepted {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+  .adr-card__status--superseded {
+    background: transparent;
+    color: var(--fg-faint);
+    border: 1px solid var(--line-strong);
+  }
+
+  .adr-card__title {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .adr-card__date {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--fg-subtle);
+  }
+
+  .adr-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  /* GitHub-лейбл в тёмной теме: заливка — тёмный тон цвета тега (темнее
+     обводки), обводка и текст — сам цвет тега в полную силу. Узкая пилюля
+     фиксированной высоты, как у настоящего Primer Label. */
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 7px;
+    border-radius: 2em;
+    border: 1px solid var(--tag-color);
+    background: color-mix(in srgb, var(--tag-color) 18%, var(--page-bg));
+    color: var(--tag-color);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+</style>

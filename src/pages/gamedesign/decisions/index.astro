@@ -1,0 +1,314 @@
+---
+// Бесповская страница: статус и список тегов — вычисляемые данные (кто кого
+// заменяет, известен только после чтения ВСЕХ ADR разом), их нельзя выразить
+// обычным markdown-содержимым одного файла. Здесь спецкод оправдан.
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Banner from '../../../components/Banner.astro';
+import AdrCard from '../../../components/AdrCard.astro';
+import { pages, resolveConfig, bannerUrl } from '../../../lib/docs';
+import { getAdrEntries, getAllTags } from '../../../lib/adr';
+
+// banner/accent/description — из docs/gamedesign/decisions/index.md, тем же
+// путём, что и у любой другой страницы. accent ничего специально не резолвит:
+// он наследуется от docs/gamedesign/index.md автоматически, как везде.
+const indexPage = pages.find((page) => page.path === 'gamedesign/decisions/index');
+if (!indexPage) throw new Error('Не найден docs/gamedesign/decisions/index.md');
+
+const config = resolveConfig(indexPage);
+const banner = bannerUrl(config.banner);
+const Content = indexPage.Content as any;
+
+const entries = getAdrEntries();
+const tags = getAllTags();
+const usedTagSlugs = new Set(entries.flatMap((entry) => entry.tags.map((tag) => tag.slug)));
+const availableTags = tags.filter((tag) => usedTagSlugs.has(tag.slug));
+
+const hasSuperseded = entries.some((entry) => entry.status === 'superseded');
+---
+
+<BaseLayout title={indexPage.title} description={config.description} accent={config.accent}>
+  {banner && <Banner src={banner} alt="" />}
+
+  <div class="adr-page">
+    <header class="doc-header">
+      <div class="doc-header__rule"></div>
+      <span class="doc-header__eyebrow">Геймдизайн</span>
+    </header>
+
+    <h1 class="adr-title">{indexPage.title}</h1>
+    {config.description && <p class="adr-lead">{config.description}</p>}
+
+    <div class="adr-intro prose">
+      <Content />
+    </div>
+
+    <div class="adr-toolbar">
+      <div class="adr-search">
+        <svg class="adr-search__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
+          <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+        <input type="search" id="adr-search" placeholder="Поиск по названию…" autocomplete="off" />
+      </div>
+
+      {
+        (availableTags.length > 0 || hasSuperseded) && (
+          <div class="adr-filters" id="adr-filters">
+            {availableTags.map((tag) => (
+              <button
+                type="button"
+                class="adr-filter-chip"
+                data-tag={tag.slug}
+                style={`--tag-color: ${tag.color}; --tag-text: ${tag.textColor};`}
+              >
+                {tag.label}
+              </button>
+            ))}
+            {hasSuperseded && (
+              <label class="adr-toggle">
+                <input type="checkbox" id="adr-show-superseded" />
+                <span class="adr-toggle__box" aria-hidden="true"></span>
+                Показывать заменённые
+              </label>
+            )}
+          </div>
+        )
+      }
+    </div>
+
+    {
+      entries.length > 0 ? (
+        <div class="adr-grid" id="adr-grid">
+          {entries.map((entry) => (
+            <AdrCard entry={entry} />
+          ))}
+        </div>
+      ) : (
+        <div class="placeholder">Решений пока нет.</div>
+      )
+    }
+
+    <p class="adr-empty" id="adr-empty" hidden>
+      Ничего не найдено — попробуйте снять часть фильтров.
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  const grid = document.getElementById('adr-grid');
+  const empty = document.getElementById('adr-empty');
+  const search = document.getElementById('adr-search') as HTMLInputElement | null;
+  const filters = document.getElementById('adr-filters');
+  const showSuperseded = document.getElementById('adr-show-superseded') as HTMLInputElement | null;
+
+  if (grid) {
+    const cards = Array.from(grid.querySelectorAll<HTMLAnchorElement>('.adr-card'));
+    const chips = filters ? Array.from(filters.querySelectorAll<HTMLButtonElement>('.adr-filter-chip')) : [];
+    const selected = new Set<string>();
+
+    function apply() {
+      const query = search?.value.trim().toLowerCase() ?? '';
+      let visible = 0;
+      for (const card of cards) {
+        const tags = (card.dataset.tags ?? '').split(',').filter(Boolean);
+        const tagMatch = selected.size === 0 || tags.some((tag) => selected.has(tag));
+        const statusMatch = showSuperseded?.checked === true || card.dataset.status !== 'superseded';
+        const searchMatch = query === '' || (card.dataset.search ?? '').includes(query);
+        const show = tagMatch && statusMatch && searchMatch;
+        card.hidden = !show;
+        if (show) visible += 1;
+      }
+      if (empty) empty.hidden = visible > 0;
+    }
+
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        const tag = chip.dataset.tag!;
+        if (selected.has(tag)) {
+          selected.delete(tag);
+          chip.classList.remove('adr-filter-chip--active');
+        } else {
+          selected.add(tag);
+          chip.classList.add('adr-filter-chip--active');
+        }
+        apply();
+      });
+    }
+
+    search?.addEventListener('input', apply);
+    showSuperseded?.addEventListener('change', apply);
+  }
+</script>
+
+<style>
+  .adr-page {
+    max-width: 1000px;
+    margin-inline: auto;
+    padding: 2.5rem 1.5rem 6rem;
+  }
+
+  .adr-title {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.875rem, 4vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+  }
+
+  .adr-lead {
+    max-width: 42rem;
+    margin: 0 0 2rem;
+    color: var(--fg-muted);
+    line-height: 1.6;
+  }
+
+  /* Заголовок уже отрисован выше вручную (adr-title) — из тела документа
+     показываем только то, что автор написал ПОСЛЕ H1, если что-то написал. */
+  .adr-intro :global(h1) {
+    display: none;
+  }
+  .adr-intro:not(:has(> :nth-child(2))) {
+    display: none;
+  }
+
+  .adr-toolbar {
+    margin-bottom: 2rem;
+  }
+
+  .adr-search {
+    position: relative;
+    max-width: 22rem;
+    margin-bottom: 1rem;
+  }
+
+  .adr-search__icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    transform: translateY(-50%);
+    color: var(--fg-faint);
+    pointer-events: none;
+  }
+
+  .adr-search input {
+    width: 100%;
+    padding: 0.5625rem 0.875rem 0.5625rem 2.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--fg);
+    font: inherit;
+    font-size: 0.9375rem;
+  }
+  .adr-search input::placeholder {
+    color: var(--fg-faint);
+  }
+  .adr-search input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  /* Убираем нативный крестик очистки у type=search — свой UI не рисуем, он не нужен. */
+  .adr-search input::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  .adr-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .adr-filter-chip {
+    font: inherit;
+    cursor: pointer;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--tag-color) 40%, var(--line));
+    border-radius: 999px;
+    background: transparent;
+    color: var(--tag-color);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .adr-filter-chip--active {
+    background: var(--tag-color);
+    color: var(--tag-text);
+    border-color: var(--tag-color);
+  }
+
+  .adr-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+    color: var(--fg-subtle);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Нативный чекбокс остаётся кликабельным и доступным, но невидимым —
+     рисуем поверх свою коробку через соседний span. */
+  .adr-toggle input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .adr-toggle__box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 5px;
+    background: var(--card);
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .adr-toggle__box::after {
+    content: '';
+    width: 8px;
+    height: 5px;
+    border-left: 2px solid var(--accent-fg);
+    border-bottom: 2px solid var(--accent-fg);
+    transform: rotate(-45deg) translateY(-1px);
+    opacity: 0;
+    transition: opacity 0.1s ease;
+  }
+
+  .adr-toggle input:checked + .adr-toggle__box {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .adr-toggle input:checked + .adr-toggle__box::after {
+    opacity: 1;
+  }
+  .adr-toggle input:focus-visible + .adr-toggle__box {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .adr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  /* Сама карточка (.adr-card, .tag-chip и её части) стилизована в
+     AdrCard.astro — её рендерит тот компонент, значит и правила CSS должны
+     жить там: Astro скоупит <style> по файлу, а не по имени класса. */
+
+  .adr-empty {
+    margin-top: 2rem;
+    color: var(--fg-subtle);
+    text-align: center;
+  }
+</style>
