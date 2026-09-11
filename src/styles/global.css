@@ -141,13 +141,18 @@ img {
 }
 
 /* ─── Баннер в стиле Steam ─────────────────────────────────────────────────
-   Один и тот же файл рисуется дважды: снизу увеличенная размытая копия,
-   растекающаяся цветом в фон страницы, сверху — резкий арт по центру.       */
+   Во всю ширину экрана, высота с потолком (не растёт бесконечно на широких
+   экранах) — избыток пропорциональной высоты обрезается object-fit: cover,
+   изображение остаётся отцентрованным. Низ не просто гаснет в сплошной цвет:
+   резкий арт маской истаивает в свою же размытую копию позади него —
+   получается настоящий блюр-переход, а не плоский градиент по альфе.       */
 
 .banner {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  width: 100%;
+  height: clamp(110px, 14vw, 210px);
   background: var(--page-bg);
 }
 
@@ -157,27 +162,30 @@ img {
   z-index: -1;
   background-size: cover;
   background-position: center;
-  filter: blur(56px) saturate(150%);
+  filter: blur(40px) saturate(150%);
   transform: scale(1.18);
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
-/* Растворяет арт в фоне страницы снизу и по бокам, чтобы не было жёсткой рамки. */
+/* Финальный штрих у самого низа — дочищает стык блюра со сплошным фоном. */
 .banner::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(to bottom, transparent 45%, var(--page-bg) 100%),
-    linear-gradient(to right, var(--page-bg) 0%, transparent 12%, transparent 88%, var(--page-bg) 100%);
+  background: linear-gradient(to bottom, transparent 80%, var(--page-bg) 100%);
 }
 
 .banner__art {
   display: block;
   width: 100%;
-  max-width: 1180px;
-  margin-inline: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* Резкая картинка истаивает раньше своего нижнего края — под ней уже
+     проступает размытый .banner__glow, а не плоский цвет. */
+  mask-image: linear-gradient(to bottom, black 45%, transparent 90%);
+  -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 90%);
 }
 
 /* ─── Главная ──────────────────────────────────────────────────────────────*/
@@ -186,7 +194,9 @@ img {
   position: relative;
   text-align: center;
   padding: 3.5rem 1.5rem 0;
-  margin-top: -7rem;
+  /* Баннер теперь много короче — тянуть заголовок сильно вверх больше не
+     нужно, иначе он наедет на ещё резкую часть картинки, а не на блюр-хвост. */
+  margin-top: -2rem;
   z-index: 1;
 }
 
@@ -343,39 +353,6 @@ img {
   font-weight: 600;
 }
 
-/* ─── Заголовок документа ──────────────────────────────────────────────────*/
-
-.doc-header {
-  margin-bottom: 2.25rem;
-}
-
-/* Акцентная полоса вместо баннера на обычных страницах. */
-.doc-header__rule {
-  width: 44px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--accent);
-  margin-bottom: 1.25rem;
-}
-
-.doc-header__eyebrow {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--fg-label);
-}
-
-.doc-header__description {
-  margin: 0.875rem 0 0;
-  font-family: var(--font-serif);
-  font-size: 1.125rem;
-  line-height: 1.6;
-  color: var(--fg-muted);
-}
-
 /* ─── Разметка markdown ────────────────────────────────────────────────────*/
 
 .prose {
@@ -397,10 +374,23 @@ img {
   scroll-margin-top: 2rem;
 }
 
-.prose h1 {
-  margin: 0 0 1rem;
+.prose > h1:first-child {
+  position: relative;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.875rem;
   font-size: clamp(2rem, 4.5vw, 2.625rem);
   letter-spacing: -0.035em;
+}
+/* Акцентная полоса — сразу под текстом заголовка, не отдельным блоком выше. */
+.prose > h1:first-child::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 44px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
 }
 .prose h2 {
   margin: 2.75rem 0 1rem;
@@ -632,7 +622,7 @@ img {
   }
 
   .home__hero {
-    margin-top: -3rem;
+    margin-top: -1rem;
   }
 }
 

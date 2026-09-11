@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Banner from '../components/Banner.astro';
 import Sidebar from '../components/Sidebar.astro';
 import DocIndex from '../components/DocIndex.astro';
 import SectionButtons from '../components/SectionButtons.astro';
@@ -35,16 +34,10 @@ const Content = page.Content as any;
 
 const banner = bannerUrl(config.banner);
 const nav = config.navigationFolder ? buildNav(config.navigationFolder) : [];
-
 const section = getSectionByName(page.section);
-// Надзаголовок нужен только на внутренних страницах: на обложке раздела
-// он дословно повторял бы заголовок ниже.
-const eyebrow = section && section.path !== page.path ? section.title : null;
 ---
 
-<BaseLayout title={page.title} description={config.description} accent={config.accent}>
-  {banner && <Banner src={banner} alt="" />}
-
+<BaseLayout title={page.title} description={config.description} accent={config.accent} banner={banner}>
   <div class:list={['doc-layout', nav.length === 0 && 'doc-layout--solo']}>
     {
       nav.length > 0 && (
@@ -53,11 +46,6 @@ const eyebrow = section && section.path !== page.path ? section.title : null;
     }
 
     <article class="doc-main">
-      <div class="doc-header">
-        <div class="doc-header__rule"></div>
-        {eyebrow && <span class="doc-header__eyebrow">{eyebrow}</span>}
-      </div>
-
       <div class="prose">
         <Content />
       </div>

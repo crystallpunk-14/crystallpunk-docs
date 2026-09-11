@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Banner from '../components/Banner.astro';
 import SectionButtons from '../components/SectionButtons.astro';
 import { homePage, resolveConfig, bannerUrl } from '../lib/docs';
 
@@ -11,9 +10,7 @@ const banner = bannerUrl(config.banner);
 const Content = homePage.Content as any;
 ---
 
-<BaseLayout title={homePage.title} description={config.description}>
-  {banner && <Banner src={banner} />}
-
+<BaseLayout title={homePage.title} description={config.description} banner={banner}>
   <div class="home__hero">
     <h1 class="home__title">{homePage.title}</h1>
     {config.description && <p class="home__tagline">{config.description}</p>}

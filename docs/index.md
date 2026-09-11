@@ -1,6 +1,6 @@
 ---
 banner: main_banner.png
-description: Документация разработчиков.
+description: Developers documentation
 buttons:
   - gamedesign
   - artstyle

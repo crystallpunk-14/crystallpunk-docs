@@ -8,6 +8,7 @@ import '../styles/global.css';
 
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import Banner from '../components/Banner.astro';
 import { pages, getParent, withBase } from '../lib/docs';
 
 interface Props {
@@ -15,9 +16,11 @@ interface Props {
   description?: string;
   /** Акцентный цвет страницы; переопределяет золотой по умолчанию. */
   accent?: string;
+  /** Готовый URL картинки (bannerUrl уже применён вызывающей стороной). */
+  banner?: string | null;
 }
 
-const { title, description, accent } = Astro.props;
+const { title, description, accent, banner } = Astro.props;
 
 const siteName = 'CrystallEdge Docs';
 const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
@@ -44,6 +47,7 @@ const backTarget = currentPage ? getParent(currentPage) : undefined;
   </head>
   <body>
     <SiteHeader />
+    {banner && <Banner src={banner} alt="" />}
     {
       backTarget && (
         <div class="page-back">

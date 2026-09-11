@@ -3,7 +3,6 @@
 // заменяет, известен только после чтения ВСЕХ ADR разом), их нельзя выразить
 // обычным markdown-содержимым одного файла. Здесь спецкод оправдан.
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import Banner from '../../../components/Banner.astro';
 import AdrCard from '../../../components/AdrCard.astro';
 import { pages, resolveConfig, bannerUrl } from '../../../lib/docs';
 import { getAdrEntries, getAllTags } from '../../../lib/adr';
@@ -26,15 +25,8 @@ const availableTags = tags.filter((tag) => usedTagSlugs.has(tag.slug));
 const hasSuperseded = entries.some((entry) => entry.status === 'superseded');
 ---
 
-<BaseLayout title={indexPage.title} description={config.description} accent={config.accent}>
-  {banner && <Banner src={banner} alt="" />}
-
+<BaseLayout title={indexPage.title} description={config.description} accent={config.accent} banner={banner}>
   <div class="adr-page">
-    <header class="doc-header">
-      <div class="doc-header__rule"></div>
-      <span class="doc-header__eyebrow">Геймдизайн</span>
-    </header>
-
     <h1 class="adr-title">{indexPage.title}</h1>
     {config.description && <p class="adr-lead">{config.description}</p>}
 
@@ -137,6 +129,10 @@ const hasSuperseded = entries.some((entry) => entry.status === 'superseded');
 
     search?.addEventListener('input', apply);
     showSuperseded?.addEventListener('change', apply);
+
+    // Чекбокс по умолчанию выключен — без этого вызова заменённые карточки
+    // видны при самой первой загрузке, пока никто не тронул ни один фильтр.
+    apply();
   }
 </script>
 
@@ -148,11 +144,24 @@ const hasSuperseded = entries.some((entry) => entry.status === 'superseded');
   }
 
   .adr-title {
-    margin: 0 0 0.75rem;
+    position: relative;
+    margin: 0 0 1.125rem;
+    padding-bottom: 0.875rem;
     font-size: clamp(1.875rem, 4vw, 2.5rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     color: var(--fg);
+  }
+  /* Та же полоса, что у .prose h1 — эта страница вне .prose, дублируем локально. */
+  .adr-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 44px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--accent);
   }
 
   .adr-lead {

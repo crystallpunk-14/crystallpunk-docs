@@ -4,9 +4,10 @@ accent: '#9deef1'
 navigationFolder: '.'
 description: Видение проекта, столбы дизайна и журнал принятых решений.
 buttons:
-  - pillars/complexity
-  - pillars/variability
-  - pillars/sociality
+  # - pillars/complexity
+  # - pillars/variability
+  # - pillars/sociality
+  - decisions
 ---
 
 # Геймдизайн
@@ -20,7 +21,3 @@ buttons:
 Ключевые принципы геймдизайна CrystallEdge, соблюдение которых двигает
 разработку проекта в нужном направлении. Любая крупная механика должна
 соблюдать их — или аргументировать, почему не может.
-
-## Журнал решений
-
-История дизайнерских ADR ведётся отдельно: [смотреть журнал решений](decisions/).
