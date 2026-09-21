@@ -11,19 +11,15 @@ Resources/Maps/_CE/Empty.yml
 
 вы можете начать маппить с нуля, воспользовавшись командами:
 
-`mapping 1000 [путь к карте]`
-
-`mapping 1001 [путь к карте]`
-
-`mapping 1002 [путь к карте]`
-
-`znetwork-combine 1000 1001 1002`
+1)`mapping 1000 [путь к карте]`
+2)`mapping 1001 [путь к карте]`
+3)`mapping 1002 [путь к карте]`
+4_`znetwork-combine 1000 1001 1002`
 
 Это создаст вам сеть з-уровней для маппинга. Дополнить ее во время работы можно как
 
-`znetwork-add-above [znetwork id] [путь к карте]`
-
-`znetwork-add-below [znetwork id] [путь к карте]`
+- `znetwork-add-above [znetwork id] [путь к карте]`
+- `znetwork-add-below [znetwork id] [путь к карте]`
 
 ## Сохранение
 
