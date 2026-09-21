@@ -1,6 +1,6 @@
 ---
 banner: adr_banner.png
-accent: '#41c14b'
+accent: '#79a69b'
 description: Летопись принятых и отвергнутых геймдизайнерских решений.
 ---
 
