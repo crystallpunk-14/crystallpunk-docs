@@ -20,11 +20,15 @@ Resources/Maps/_CE/Empty.yml
 `znetwork-add-above [znetwork id] [путь к карте]`
 `znetwork-add-below [znetwork id] [путь к карте]`
 
+## Сохранение
+
 чтобы сохранить вашу сеть, используйте команду
 
 `znetwork-save [znetwork id] [name]`
 
 и ваши карты будут сохранены по пути `\bin\Content.Server\data\ZNetworkSaves` в виде папки с несколькими картами.
+
+## Загрузка 
 
 Вы можете использовать эти карты для запуска з-сети внутри раунда двумя методами.
 
