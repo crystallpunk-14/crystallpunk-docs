@@ -13,3 +13,7 @@ academy:
 guard:
   label: Стража
   color: "#1f79da"
+
+medicine:
+  label: Медицина
+  color: "#72e7b6"
