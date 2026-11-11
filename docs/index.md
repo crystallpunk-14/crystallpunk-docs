@@ -5,6 +5,7 @@ buttons:
   - gamedesign
   - artstyle
   - tech
+  - schedule
 ---
 
 # CrystallEdge

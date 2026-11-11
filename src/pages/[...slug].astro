@@ -20,7 +20,13 @@ export function getStaticPaths() {
   // отдельный чанк без замыкания на внешние module-level константы, поэтому
   // список путей задан прямо здесь, а не вынесенной переменной.
   return pages
-    .filter((page) => page.routeSlug !== '' && page.path !== 'gamedesign/decisions/index')
+    .filter(
+      (page) =>
+        page.routeSlug !== '' &&
+        page.path !== 'gamedesign/decisions/index' &&
+        // Страница графика ЗБТ — pages/schedule.astro (интерактивная, с JS).
+        page.path !== 'schedule',
+    )
     .map((page) => ({ params: { slug: page.routeSlug }, props: { page } }));
 }
 

@@ -1,0 +1,400 @@
+---
+// Интерактивная страница: часовой пояс зрителя известен только в браузере,
+// поэтому сетка строится клиентским скриптом, а не markdown-рендером.
+// Заголовок и описание берутся из docs/schedule.md, как у любой страницы.
+//
+// ВАЖНО: расписание дублирует CEClosedBetaTestSystem на сервере (список Windows).
+// Меняя одно — меняйте и другое.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pages, resolveConfig, bannerUrl } from '../lib/docs';
+
+const page = pages.find((p) => p.path === 'schedule');
+if (!page) throw new Error('Не найден docs/schedule.md');
+
+const config = resolveConfig(page);
+const banner = bannerUrl(config.banner);
+---
+
+<BaseLayout title={page.title} description={config.description} accent={config.accent} banner={banner}>
+  <div class="sch">
+    <h1 class="sch__title">{page.title}</h1>
+    {config.description && <p class="sch__lead">{config.description}</p>}
+
+    <div class="sch__status" id="sch-status" aria-live="polite"></div>
+
+    <div class="sch__toolbar">
+      <div class="sch__toggle" role="group" aria-label="Часовой пояс">
+        <button type="button" data-tz="local" class="is-active">Моё время</button>
+        <button type="button" data-tz="msk">МСК</button>
+      </div>
+      <span class="sch__tzname" id="sch-tzname"></span>
+      <div class="sch__legend">
+        <span class="sch__chip sch__chip--ru">Русский язык</span>
+        <span class="sch__chip sch__chip--en">English</span>
+      </div>
+    </div>
+
+    <div class="sch__scroll">
+      <div class="sch__grid" id="sch-grid"></div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  type Lang = 'ru' | 'en';
+  interface Win {
+    /** День недели в МСК: 0 = воскресенье … 6 = суббота. */
+    day: number;
+    /** Час начала по МСК. */
+    hour: number;
+    /** Длительность, часов. */
+    hours: number;
+    lang: Lang;
+  }
+
+  // Время по Москве (UTC+3, без перехода на летнее время). Дублирует сервер.
+  const WINDOWS: Win[] = [
+    { day: 3, hour: 18, hours: 4, lang: 'ru' },
+    { day: 6, hour: 16, hours: 4, lang: 'ru' },
+    { day: 4, hour: 16, hours: 4, lang: 'en' },
+    { day: 0, hour: 18, hours: 4, lang: 'en' },
+  ];
+
+  const MSK_OFFSET_H = 3;
+  const HOUR_PX = 24;
+  const HOUR_MS = 3600_000;
+  const DAY_MS = 24 * HOUR_MS;
+  const LANG_NAME: Record<Lang, string> = { ru: 'русском', en: 'английском' };
+  const WEEKDAYS = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+
+  interface Occurrence {
+    start: number;
+    end: number;
+    lang: Lang;
+  }
+
+  type Mode = 'local' | 'msk';
+  let mode: Mode = 'local';
+  try {
+    if (localStorage.getItem('sch-mode') === 'msk') mode = 'msk';
+  } catch {
+    // Хранилище может быть недоступно — тогда просто показываем своё время.
+  }
+
+  /** Все вхождения окон, пересекающие диапазон ±10 дней от now (UTC-мс). */
+  function occurrences(now: number): Occurrence[] {
+    const result: Occurrence[] = [];
+    const base = new Date(now + MSK_OFFSET_H * HOUR_MS);
+    for (let offset = -10; offset <= 10; offset++) {
+      const d = new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth(), base.getUTCDate() + offset));
+      for (const w of WINDOWS) {
+        if (d.getUTCDay() !== w.day) continue;
+        const start = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), w.hour - MSK_OFFSET_H);
+        result.push({ start, end: start + w.hours * HOUR_MS, lang: w.lang });
+      }
+    }
+    return result.sort((a, b) => a.start - b.start);
+  }
+
+  const pad = (n: number) => String(n).padStart(2, '0');
+
+  /** Календарная дата и «полночь» суток в выбранном поясе. */
+  function dayStarts(now: number, count: number): number[] {
+    const starts: number[] = [];
+    if (mode === 'msk') {
+      const m = new Date(now + MSK_OFFSET_H * HOUR_MS);
+      for (let i = 0; i < count; i++) {
+        starts.push(Date.UTC(m.getUTCFullYear(), m.getUTCMonth(), m.getUTCDate() + i, -MSK_OFFSET_H));
+      }
+    } else {
+      const l = new Date(now);
+      for (let i = 0; i < count; i++) {
+        starts.push(new Date(l.getFullYear(), l.getMonth(), l.getDate() + i).getTime());
+      }
+    }
+    return starts;
+  }
+
+  /** Поля даты/времени момента в выбранном поясе. */
+  function fields(ms: number): { wd: number; day: number; month: number; h: number; m: number } {
+    if (mode === 'msk') {
+      const d = new Date(ms + MSK_OFFSET_H * HOUR_MS);
+      return { wd: d.getUTCDay(), day: d.getUTCDate(), month: d.getUTCMonth() + 1, h: d.getUTCHours(), m: d.getUTCMinutes() };
+    }
+    const d = new Date(ms);
+    return { wd: d.getDay(), day: d.getDate(), month: d.getMonth() + 1, h: d.getHours(), m: d.getMinutes() };
+  }
+
+  const fmtTime = (ms: number) => {
+    const f = fields(ms);
+    return `${pad(f.h)}:${pad(f.m)}`;
+  };
+
+  function formatDuration(ms: number): string {
+    const totalMin = Math.max(0, Math.floor(ms / 60_000));
+    const days = Math.floor(totalMin / 1440);
+    const hours = Math.floor((totalMin % 1440) / 60);
+    const minutes = totalMin % 60;
+    const parts: string[] = [];
+    if (days) parts.push(`${days} д`);
+    if (days || hours) parts.push(`${hours} ч`);
+    parts.push(`${pad(minutes)} мин`);
+    return parts.join(' ');
+  }
+
+  const grid = document.getElementById('sch-grid')!;
+  const statusEl = document.getElementById('sch-status')!;
+  const tzNameEl = document.getElementById('sch-tzname')!;
+
+  function renderGrid() {
+    const now = Date.now();
+    const starts = dayStarts(now, 7);
+    const occ = occurrences(now);
+
+    const hours = Array.from({ length: 24 }, (_, h) => h);
+    const axis = hours
+      .filter((h) => h % 2 === 0)
+      .map((h) => `<span style="top:${h * HOUR_PX}px">${pad(h)}:00</span>`)
+      .join('');
+
+    const columns = starts
+      .map((dayStart, i) => {
+        const dayEnd = i + 1 < starts.length ? starts[i + 1] : dayStart + DAY_MS;
+        const span = dayEnd - dayStart;
+        const f = fields(dayStart + HOUR_MS / 2);
+
+        const blocks = occ
+          .filter((o) => o.start < dayEnd && o.end > dayStart)
+          .map((o) => {
+            const s = Math.max(o.start, dayStart);
+            const e = Math.min(o.end, dayEnd);
+            const top = ((s - dayStart) / span) * 24 * HOUR_PX;
+            const height = ((e - s) / span) * 24 * HOUR_PX;
+            const label = `${fmtTime(o.start)}–${fmtTime(o.end)}`;
+            const lang = o.lang === 'ru' ? 'RU' : 'EN';
+            return `<div class="sch__block sch__block--${o.lang}" style="top:${top}px;height:${height}px" title="Запуск на ${LANG_NAME[o.lang]} языке, ${label}"><b>${lang}</b><span>${label}</span></div>`;
+          })
+          .join('');
+
+        const today = i === 0 ? ' is-today' : '';
+        return `<div class="sch__col${today}"><div class="sch__head"><b>${WEEKDAYS[f.wd]}</b><span>${pad(f.day)}.${pad(f.month)}</span></div><div class="sch__lane" style="height:${24 * HOUR_PX}px">${blocks}</div></div>`;
+      })
+      .join('');
+
+    grid.innerHTML = `<div class="sch__axis"><div class="sch__head"></div><div class="sch__lane" style="height:${24 * HOUR_PX}px">${axis}</div></div>${columns}`;
+
+    tzNameEl.textContent =
+      mode === 'msk' ? 'Москва (UTC+3)' : Intl.DateTimeFormat().resolvedOptions().timeZone || 'местное время';
+  }
+
+  function renderStatus() {
+    const now = Date.now();
+    const occ = occurrences(now);
+    const current = occ.find((o) => o.start <= now && now < o.end);
+    if (current) {
+      statusEl.innerHTML = `<span class="sch__dot sch__dot--live"></span>Сейчас идёт запуск на ${LANG_NAME[current.lang]} языке — до конца ${formatDuration(current.end - now)}`;
+      return;
+    }
+    const next = occ.find((o) => o.start > now);
+    if (next) {
+      statusEl.innerHTML = `<span class="sch__dot"></span>Следующий запуск на ${LANG_NAME[next.lang]} языке через <b>${formatDuration(next.start - now)}</b>`;
+    }
+  }
+
+  function setMode(next: Mode) {
+    mode = next;
+    try {
+      localStorage.setItem('sch-mode', mode);
+    } catch {
+      // см. выше
+    }
+    document.querySelectorAll<HTMLButtonElement>('.sch__toggle button').forEach((b) => {
+      b.classList.toggle('is-active', b.dataset.tz === mode);
+    });
+    renderGrid();
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.sch__toggle button').forEach((b) => {
+    b.addEventListener('click', () => setMode(b.dataset.tz as Mode));
+  });
+
+  setMode(mode);
+  renderStatus();
+  setInterval(renderStatus, 1000);
+  // Раз в минуту пересобираем сетку: после полуночи столбцы сдвигаются на день.
+  setInterval(renderGrid, 60_000);
+</script>
+
+<style is:global>
+  .sch {
+    --ru: #f5c451;
+    --en: #6fb8ff;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 16px 3rem;
+  }
+  .sch__title {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    letter-spacing: -0.02em;
+  }
+  .sch__lead {
+    margin: 0 0 1.5rem;
+    color: var(--fg-muted);
+  }
+  .sch__status {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    font-size: 1.0625rem;
+  }
+  .sch__status b {
+    color: var(--accent);
+  }
+  .sch__dot {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--fg-faint);
+  }
+  .sch__dot--live {
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+  .sch__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .sch__toggle {
+    display: inline-flex;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .sch__toggle button {
+    padding: 0.5rem 1rem;
+    border: 0;
+    background: transparent;
+    color: var(--fg-muted);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .sch__toggle button.is-active {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+  .sch__tzname {
+    color: var(--fg-subtle);
+    font-size: 0.875rem;
+  }
+  .sch__legend {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+  .sch__chip {
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .sch__chip--ru {
+    background: color-mix(in srgb, var(--ru) 18%, transparent);
+    color: var(--ru);
+  }
+  .sch__chip--en {
+    background: color-mix(in srgb, var(--en) 18%, transparent);
+    color: var(--en);
+  }
+  .sch__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+  }
+  .sch__grid {
+    display: grid;
+    grid-template-columns: 52px repeat(7, minmax(88px, 1fr));
+    min-width: 700px;
+  }
+  .sch__head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    border-bottom: 1px solid var(--line);
+    line-height: 1.25;
+  }
+  .sch__head span {
+    color: var(--fg-subtle);
+    font-size: 0.8125rem;
+  }
+  .sch__col {
+    border-left: 1px solid var(--line-soft);
+  }
+  .sch__col.is-today .sch__head {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .sch__col.is-today .sch__head b {
+    color: var(--accent);
+  }
+  .sch__lane {
+    position: relative;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 47px,
+      var(--line-soft) 47px,
+      var(--line-soft) 48px
+    );
+  }
+  .sch__axis .sch__lane span {
+    position: absolute;
+    right: 8px;
+    transform: translateY(-50%);
+    color: var(--fg-label);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+  }
+  .sch__axis .sch__lane span:first-child {
+    transform: none;
+  }
+  .sch__block {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 8px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+  }
+  .sch__block span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .sch__block--ru {
+    border: 1px solid var(--ru);
+    background: color-mix(in srgb, var(--ru) 22%, var(--card));
+    color: var(--ru);
+  }
+  .sch__block--en {
+    border: 1px solid var(--en);
+    background: color-mix(in srgb, var(--en) 22%, var(--card));
+    color: var(--en);
+  }
+</style>
