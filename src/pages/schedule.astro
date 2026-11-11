@@ -23,15 +23,7 @@ const banner = bannerUrl(config.banner);
     <div class="sch__status" id="sch-status" aria-live="polite"></div>
 
     <div class="sch__toolbar">
-      <div class="sch__toggle" role="group" aria-label="Часовой пояс">
-        <button type="button" data-tz="local" class="is-active">Моё время</button>
-        <button type="button" data-tz="msk">МСК</button>
-      </div>
       <span class="sch__tzname" id="sch-tzname"></span>
-      <div class="sch__legend">
-        <span class="sch__chip sch__chip--ru">Русский язык</span>
-        <span class="sch__chip sch__chip--en">English</span>
-      </div>
     </div>
 
     <div class="sch__scroll">
@@ -73,13 +65,9 @@ const banner = bannerUrl(config.banner);
     lang: Lang;
   }
 
+  // Всегда показываем время в часовом поясе зрителя; МСК нужен только для исходных данных.
   type Mode = 'local' | 'msk';
-  let mode: Mode = 'local';
-  try {
-    if (localStorage.getItem('sch-mode') === 'msk') mode = 'msk';
-  } catch {
-    // Хранилище может быть недоступно — тогда просто показываем своё время.
-  }
+  const mode: Mode = 'local';
 
   /** Все вхождения окон, пересекающие диапазон ±10 дней от now (UTC-мс). */
   function occurrences(now: number): Occurrence[] {
@@ -176,15 +164,14 @@ const banner = bannerUrl(config.banner);
           })
           .join('');
 
-        const today = i === 0 ? ' is-today' : '';
+        const today = (i === 0 ? ' is-today' : '') + (f.wd === 0 || f.wd === 6 ? ' is-weekend' : '');
         return `<div class="sch__col${today}"><div class="sch__head"><b>${WEEKDAYS[f.wd]}</b><span>${pad(f.day)}.${pad(f.month)}</span></div><div class="sch__lane" style="height:${24 * HOUR_PX}px">${blocks}</div></div>`;
       })
       .join('');
 
     grid.innerHTML = `<div class="sch__axis"><div class="sch__head"></div><div class="sch__lane" style="height:${24 * HOUR_PX}px">${axis}</div></div>${columns}`;
 
-    tzNameEl.textContent =
-      mode === 'msk' ? 'Москва (UTC+3)' : Intl.DateTimeFormat().resolvedOptions().timeZone || 'местное время';
+    tzNameEl.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'местное время';
   }
 
   function renderStatus() {
@@ -201,24 +188,7 @@ const banner = bannerUrl(config.banner);
     }
   }
 
-  function setMode(next: Mode) {
-    mode = next;
-    try {
-      localStorage.setItem('sch-mode', mode);
-    } catch {
-      // см. выше
-    }
-    document.querySelectorAll<HTMLButtonElement>('.sch__toggle button').forEach((b) => {
-      b.classList.toggle('is-active', b.dataset.tz === mode);
-    });
-    renderGrid();
-  }
-
-  document.querySelectorAll<HTMLButtonElement>('.sch__toggle button').forEach((b) => {
-    b.addEventListener('click', () => setMode(b.dataset.tz as Mode));
-  });
-
-  setMode(mode);
+  renderGrid();
   renderStatus();
   setInterval(renderStatus, 1000);
   // Раз в минуту пересобираем сетку: после полуночи столбцы сдвигаются на день.
@@ -274,47 +244,12 @@ const banner = bannerUrl(config.banner);
     gap: 0.75rem 1rem;
     margin-bottom: 1rem;
   }
-  .sch__toggle {
-    display: inline-flex;
-    border: 1px solid var(--line-strong);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .sch__toggle button {
-    padding: 0.5rem 1rem;
-    border: 0;
-    background: transparent;
-    color: var(--fg-muted);
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .sch__toggle button.is-active {
-    background: var(--accent);
-    color: var(--accent-fg);
-  }
   .sch__tzname {
     color: var(--fg-subtle);
     font-size: 0.875rem;
   }
-  .sch__legend {
-    display: flex;
-    gap: 0.5rem;
-    margin-left: auto;
-  }
-  .sch__chip {
-    padding: 0.25rem 0.625rem;
-    border-radius: 999px;
-    font-size: 0.8125rem;
-    font-weight: 600;
-  }
-  .sch__chip--ru {
-    background: color-mix(in srgb, var(--ru) 18%, transparent);
-    color: var(--ru);
-  }
-  .sch__chip--en {
-    background: color-mix(in srgb, var(--en) 18%, transparent);
-    color: var(--en);
+  .sch__col.is-weekend {
+    background: #ffffff0a;
   }
   .sch__scroll {
     overflow-x: auto;
